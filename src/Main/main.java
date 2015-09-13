@@ -5,6 +5,19 @@
  */
 package Main;
 
+import Grafo.TDAGrafo;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 /**
  *
  * @author Isaias
@@ -14,8 +27,12 @@ public class main extends javax.swing.JFrame {
     /**
      * Creates new form main
      */
+    private TDAGrafo grafo;
+    private String direccion = "./predeterminado.txt";
     public main() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        //importarArchivo(direccion);
     }
 
     /**
@@ -27,38 +44,106 @@ public class main extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jSpinner1 = new javax.swing.JSpinner();
-        jLabel1 = new javax.swing.JLabel();
+        Planetas = new javax.swing.JFrame();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        TeAr_Grafos = new javax.swing.JTextArea();
+        jButton1 = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+
+        Planetas.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        javax.swing.GroupLayout PlanetasLayout = new javax.swing.GroupLayout(Planetas.getContentPane());
+        Planetas.getContentPane().setLayout(PlanetasLayout);
+        PlanetasLayout.setHorizontalGroup(
+            PlanetasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        PlanetasLayout.setVerticalGroup(
+            PlanetasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setResizable(false);
 
-        jSpinner1.setModel(new javax.swing.SpinnerNumberModel(3, 3, 10, 1));
+        TeAr_Grafos.setColumns(20);
+        TeAr_Grafos.setFont(new java.awt.Font("Consolas", 0, 13)); // NOI18N
+        TeAr_Grafos.setRows(5);
+        jScrollPane1.setViewportView(TeAr_Grafos);
 
-        jLabel1.setText("Cantidad de planetas");
+        jButton1.setText("Buscar caminos optimos");
+
+        jMenu1.setText("Archivo");
+
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem1.setText("Abrir");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
+        jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem3.setText("Importar/Cargar");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem3);
+
+        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem2.setText("Guardar");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem2);
+
+        jMenuBar1.add(jMenu1);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(141, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(108, 108, 108))
+                .addContainerGap(167, Short.MAX_VALUE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(239, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addGap(41, 41, 41))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        leerArchivo();
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        guardarArchivo();
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        importarArchivo(direccion);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -96,7 +181,137 @@ public class main extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JSpinner jSpinner1;
+    private javax.swing.JFrame Planetas;
+    private javax.swing.JTextArea TeAr_Grafos;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
+
+    private void importarArchivo(String direccion) {
+        try {
+            Scanner readGrafo = new Scanner(new File(direccion));
+            readGrafo.useDelimiter("\n");
+            //Lee la primera linea del archivo
+            String[] nodos = readGrafo.next().split(":");
+            grafo = new TDAGrafo(nodos.length);
+            //Agrega los vertices al grafo
+            for (String identidad : nodos) {
+                grafo.addNodo(identidad);
+            }
+            //Lee el archivo
+            while (readGrafo.hasNext()) {
+                //Obtiene la arista
+                String arista = readGrafo.next();
+                arista = arista.replaceAll(" -", "-");
+                arista = arista.replaceAll("-> ", "->");
+                //Obtiene el nodo de donde proviene
+                String node1 = arista.substring(0, arista.indexOf("-"));
+                //Obtiene el nodo a donde apunta
+                String node2 = arista.substring(arista.indexOf(">") + 1);
+                //El peso de la arista
+                int peso = Integer.parseInt(arista.substring(arista.indexOf("-") + 1, arista.lastIndexOf("-")));
+                //DEBUG
+                System.out.printf("node1 = %s\n"
+                        + "node2 = %s\n"
+                        + "peso = %d\n", node1, node2, peso);
+                //Agrega aristas al grafo
+                grafo.addArista(node1, node2, peso);
+            }
+            JOptionPane.showMessageDialog(this, "Se logro cargar correctamente el archivo");
+        } catch (FileNotFoundException ex) {
+            crearArchivoPredeterminado();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error al leer archivo", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
+            int option = JOptionPane.showConfirmDialog(this, "¿Desea editar el archivo?");
+            if (option == JOptionPane.OK_OPTION) {
+                leerArchivo(direccion);
+            }
+        }
+
+    }
+
+    private void crearArchivoPredeterminado() {
+        try {
+            FileWriter output = new FileWriter("./predeterminado.txt");
+            output.write("Planeta X:Planeta Y:Planeta Z\n"
+                    + "Planeta X -3-> Planeta Z\n"
+                    + "Planeta X -2-> Planeta Y\n"
+                    + "Planeta Y -5-> Planeta Z\n"
+                    + "Planeta Z -3-> Planeta X");
+            output.flush();
+            output.close();
+        } catch (FileNotFoundException ex1) {
+            Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex1);
+        } catch (IOException ex1) {
+            Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex1);
+        }
+    }
+
+    private void leerArchivo(String direccion) {
+        try {
+            Scanner read = new Scanner(new File(direccion));
+            TeAr_Grafos.setText(read.nextLine() + "\n");
+            while (read.hasNext()) {
+                TeAr_Grafos.append(read.nextLine() + "\n");
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void leerArchivo() {
+        JFileChooser elegirArchivo = new JFileChooser();
+        FileFilter filtro = new FileNameExtensionFilter("Texto", "txt");
+        elegirArchivo.setFileFilter(filtro);
+        elegirArchivo.setCurrentDirectory(new File("."));
+        if (elegirArchivo.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            File archivo = elegirArchivo.getSelectedFile();
+            try {
+                Scanner read = new Scanner(archivo);
+                TeAr_Grafos.setText(read.nextLine() + "\n");
+                while (read.hasNext()) {
+                    TeAr_Grafos.append(read.nextLine() + "\n");
+
+                }
+                direccion = elegirArchivo.getSelectedFile().getAbsolutePath();
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(main.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    public void guardarArchivo() {
+        try {
+            JFileChooser elegirArchivo = new JFileChooser();
+            FileFilter filtro = new FileNameExtensionFilter("Texto", "txt");
+            elegirArchivo.setFileFilter(filtro);
+            elegirArchivo.setCurrentDirectory(new File("."));
+            if (elegirArchivo.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+                String archivo = elegirArchivo.getSelectedFile() + "";
+                if (!archivo.contains(".txt")) {
+                    archivo += ".txt";
+                }
+                FileWriter output = new FileWriter(archivo);
+                output.write(TeAr_Grafos.getText());
+                output.flush();
+                output.close();
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(main.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(main.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public void exportarArchivo(){
+        
+    }
 }

@@ -31,13 +31,20 @@ public class TDAGrafo {
         listaNodos[Node1].addAdyacencia(listaNodos[Node2], Peso);
         return true;
     }
-    public void addArista(char Node1, char Node2, int peso) throws Exception{
-        Node1 = (char)(Character.toUpperCase(Node1) - 65);
-        Node2 = (char)(Character.toUpperCase(Node2) - 65);
-        if(Node1 == Node2){
+    public void addArista(String node1ID, String node2ID, int peso) throws Exception{
+        if(node1ID.contentEquals(node2ID)){
             throw new Exception("No se puede asignar adyacencia al mismo nodo");
         }
-        if(Node1 > nodeControl || Node2 > nodeControl){
+        int Node1 = -1, Node2 = -1;
+        for(int i = 0; i < nodeControl; i++){
+            if(listaNodos[i].getIdentidad().equals(node1ID)){
+                Node1 = i;
+            }
+            if(listaNodos[i].getIdentidad().equals(node2ID)){
+                Node2 = i;
+            }
+        }
+        if(Node1 == -1 || Node2 == -1){
             throw new Exception("Uno de los nodos no existe");
         }
         listaNodos[Node1].addAdyacencia(listaNodos[Node2], peso);
