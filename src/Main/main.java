@@ -6,14 +6,15 @@
 package Main;
 
 import Grafo.TDAGrafo;
+import java.awt.Image;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -22,7 +23,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  *
  * @author Isaias
  */
-public class main extends javax.swing.JFrame {
+public class main extends JFrame {
 
     /**
      * Creates new form main
@@ -32,7 +33,19 @@ public class main extends javax.swing.JFrame {
     public main() {
         initComponents();
         this.setLocationRelativeTo(null);
-        //importarArchivo(direccion);
+        //JFrame del editor de planetas
+        EditorPlaneta.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        ImageIcon universoIcon = new ImageIcon("./Imagenes/Universo.png");
+        universoIcon = new ImageIcon(universoIcon.getImage().getScaledInstance(panelUniverso.getBounds().width, panelUniverso.getBounds().height, Image.SCALE_DEFAULT));
+        image_Universo.setIcon(universoIcon);
+        EditorPlaneta.setLocationRelativeTo(this);
+        //JFrame del editor de texto
+        EditorTexto.pack();
+        EditorTexto.setLocationRelativeTo(null);
+        ImageIcon nasaIcon = new ImageIcon("./Imagenes/nasaLogo.png");
+        nasaIcon = new ImageIcon(nasaIcon.getImage().getScaledInstance(130, 103, Image.SCALE_DEFAULT));
+        nasaLogo.setIcon(nasaIcon);
+        nasaLogo1.setIcon(nasaIcon);
     }
 
     /**
@@ -44,106 +57,378 @@ public class main extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        Planetas = new javax.swing.JFrame();
+        EditorTexto = new javax.swing.JFrame();
+        jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         TeAr_Grafos = new javax.swing.JTextArea();
-        jButton1 = new javax.swing.JButton();
+        bu_SaveContinue = new javax.swing.JLabel();
+        bu_return2Menu = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        menu_Abrir = new javax.swing.JMenuItem();
+        menu_Cargar = new javax.swing.JMenuItem();
+        menu_Guardar = new javax.swing.JMenuItem();
+        EditorPlaneta = new javax.swing.JFrame();
+        jPanel4 = new javax.swing.JPanel();
+        bu_return2Menu1 = new javax.swing.JLabel();
+        panelUniverso = new javax.swing.JPanel();
+        image_Universo = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        bu_fromImport = new javax.swing.JLabel();
+        bu_newMap = new javax.swing.JLabel();
+        nasaLogo = new javax.swing.JLabel();
+        nasaLogo1 = new javax.swing.JLabel();
+        bu_fromImportDefault = new javax.swing.JLabel();
 
-        Planetas.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        EditorTexto.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        javax.swing.GroupLayout PlanetasLayout = new javax.swing.GroupLayout(Planetas.getContentPane());
-        Planetas.getContentPane().setLayout(PlanetasLayout);
-        PlanetasLayout.setHorizontalGroup(
-            PlanetasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+        jPanel3.setBackground(new java.awt.Color(0, 0, 0));
+
+        TeAr_Grafos.setBackground(new java.awt.Color(0, 0, 0));
+        TeAr_Grafos.setColumns(20);
+        TeAr_Grafos.setFont(new java.awt.Font("Consolas", 0, 13)); // NOI18N
+        TeAr_Grafos.setForeground(new java.awt.Color(204, 204, 204));
+        TeAr_Grafos.setRows(5);
+        TeAr_Grafos.setTabSize(4);
+        TeAr_Grafos.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 102, 102), new java.awt.Color(204, 204, 204)));
+        TeAr_Grafos.setCaretColor(new java.awt.Color(204, 204, 204));
+        TeAr_Grafos.setDisabledTextColor(new java.awt.Color(204, 204, 255));
+        TeAr_Grafos.setSelectedTextColor(new java.awt.Color(0, 0, 0));
+        TeAr_Grafos.setSelectionColor(new java.awt.Color(204, 204, 204));
+        jScrollPane1.setViewportView(TeAr_Grafos);
+
+        bu_SaveContinue.setBackground(new java.awt.Color(0, 0, 0));
+        bu_SaveContinue.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        bu_SaveContinue.setForeground(new java.awt.Color(204, 204, 204));
+        bu_SaveContinue.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        bu_SaveContinue.setText("Guardar y continuar con este archivo");
+        bu_SaveContinue.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 102, 102), new java.awt.Color(204, 204, 204)));
+        bu_SaveContinue.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                bu_SaveContinueMouseReleased(evt);
+            }
+        });
+
+        bu_return2Menu.setBackground(new java.awt.Color(0, 0, 0));
+        bu_return2Menu.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        bu_return2Menu.setForeground(new java.awt.Color(204, 204, 204));
+        bu_return2Menu.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        bu_return2Menu.setText("Regresar al menu principal");
+        bu_return2Menu.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 102, 102), new java.awt.Color(204, 204, 204)));
+        bu_return2Menu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                bu_return2MenuMouseReleased(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+                    .addComponent(bu_SaveContinue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(bu_return2Menu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
-        PlanetasLayout.setVerticalGroup(
-            PlanetasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(bu_SaveContinue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(bu_return2Menu, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
+                .addGap(48, 48, 48))
+        );
+
+        jMenu1.setText("Archivo");
+
+        menu_Abrir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        menu_Abrir.setText("Abrir");
+        menu_Abrir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menu_AbrirActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menu_Abrir);
+
+        menu_Cargar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
+        menu_Cargar.setText("Importar/Cargar");
+        menu_Cargar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menu_CargarActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menu_Cargar);
+
+        menu_Guardar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        menu_Guardar.setText("Guardar");
+        menu_Guardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menu_GuardarActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menu_Guardar);
+
+        jMenuBar1.add(jMenu1);
+
+        EditorTexto.setJMenuBar(jMenuBar1);
+
+        javax.swing.GroupLayout EditorTextoLayout = new javax.swing.GroupLayout(EditorTexto.getContentPane());
+        EditorTexto.getContentPane().setLayout(EditorTextoLayout);
+        EditorTextoLayout.setHorizontalGroup(
+            EditorTextoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        EditorTextoLayout.setVerticalGroup(
+            EditorTextoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        EditorPlaneta.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel4.setBackground(new java.awt.Color(0, 0, 0));
+
+        bu_return2Menu1.setBackground(new java.awt.Color(0, 0, 0));
+        bu_return2Menu1.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        bu_return2Menu1.setForeground(new java.awt.Color(204, 204, 204));
+        bu_return2Menu1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        bu_return2Menu1.setText("Regresar al menu principal");
+        bu_return2Menu1.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 102, 102), new java.awt.Color(204, 204, 204)));
+        bu_return2Menu1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                bu_return2MenuMouseReleased(evt);
+            }
+        });
+
+        panelUniverso.setBackground(new java.awt.Color(51, 51, 51));
+
+        javax.swing.GroupLayout panelUniversoLayout = new javax.swing.GroupLayout(panelUniverso);
+        panelUniverso.setLayout(panelUniversoLayout);
+        panelUniversoLayout.setHorizontalGroup(
+            panelUniversoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(image_Universo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        panelUniversoLayout.setVerticalGroup(
+            panelUniversoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(image_Universo, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(bu_return2Menu1, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+                .addContainerGap())
+            .addComponent(panelUniverso, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addComponent(panelUniverso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(bu_return2Menu1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout EditorPlanetaLayout = new javax.swing.GroupLayout(EditorPlaneta.getContentPane());
+        EditorPlaneta.getContentPane().setLayout(EditorPlanetaLayout);
+        EditorPlanetaLayout.setHorizontalGroup(
+            EditorPlanetaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        EditorPlanetaLayout.setVerticalGroup(
+            EditorPlanetaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setResizable(false);
 
-        TeAr_Grafos.setColumns(20);
-        TeAr_Grafos.setFont(new java.awt.Font("Consolas", 0, 13)); // NOI18N
-        TeAr_Grafos.setRows(5);
-        jScrollPane1.setViewportView(TeAr_Grafos);
+        jPanel1.setBackground(new java.awt.Color(0, 0, 0));
 
-        jButton1.setText("Buscar caminos optimos");
+        jLabel1.setFont(new java.awt.Font("Lucida Calligraphy", 0, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(204, 204, 204));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("UPS - Universal Positional System");
 
-        jMenu1.setText("Archivo");
+        jPanel2.setBackground(new java.awt.Color(0, 0, 0));
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem1.setText("Abrir");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+        bu_fromImport.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        bu_fromImport.setForeground(new java.awt.Color(204, 204, 204));
+        bu_fromImport.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        bu_fromImport.setText("Cargar mapa");
+        bu_fromImport.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 102, 102), new java.awt.Color(204, 204, 204)));
+        bu_fromImport.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                bu_fromImportMouseReleased(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
 
-        jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem3.setText("Importar/Cargar");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
+        bu_newMap.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        bu_newMap.setForeground(new java.awt.Color(204, 204, 204));
+        bu_newMap.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        bu_newMap.setText("Crear nuevo mapa");
+        bu_newMap.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 102, 102), new java.awt.Color(204, 204, 204)));
+        bu_newMap.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                bu_newMapMouseReleased(evt);
             }
         });
-        jMenu1.add(jMenuItem3);
 
-        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem2.setText("Guardar");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuItem2);
+        bu_fromImportDefault.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        bu_fromImportDefault.setForeground(new java.awt.Color(204, 204, 204));
+        bu_fromImportDefault.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        bu_fromImportDefault.setText("Cargar predeterminado");
+        bu_fromImportDefault.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 102, 102), new java.awt.Color(204, 204, 204)));
 
-        jMenuBar1.add(jMenu1);
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(nasaLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(bu_fromImport, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bu_newMap, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bu_fromImportDefault, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
+                .addComponent(nasaLogo1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
 
-        setJMenuBar(jMenuBar1);
+        jPanel2Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {bu_fromImport, bu_fromImportDefault, bu_newMap});
+
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(bu_newMap, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(19, 19, 19)
+                        .addComponent(bu_fromImport, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(19, 19, 19)
+                        .addComponent(bu_fromImportDefault, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(nasaLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(nasaLogo1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(30, 30, 30))))
+        );
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(167, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void menu_AbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_AbrirActionPerformed
         leerArchivo();
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_menu_AbrirActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    private void menu_GuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_GuardarActionPerformed
         guardarArchivo();
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    }//GEN-LAST:event_menu_GuardarActionPerformed
 
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+    private void menu_CargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_CargarActionPerformed
         importarArchivo(direccion);
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+    }//GEN-LAST:event_menu_CargarActionPerformed
+
+    private void bu_fromImportMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bu_fromImportMouseReleased
+        boolean nextStep = evt.getX() < evt.getComponent().getWidth() && evt.getX() > 0;
+        if(nextStep){
+            nextStep = evt.getY() < evt.getComponent().getHeight() && evt.getY() > 0;
+        }
+        if(nextStep){
+            if(importarArchivo()){
+                this.setVisible(false);
+                EditorPlaneta.setVisible(true);
+            }            
+        }
+    }//GEN-LAST:event_bu_fromImportMouseReleased
+
+    private void bu_return2MenuMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bu_return2MenuMouseReleased
+        boolean nextStep = evt.getX() < evt.getComponent().getWidth() && evt.getX() > 0;
+        if(nextStep){
+            nextStep = evt.getY() < evt.getComponent().getHeight() && evt.getY() > 0;
+        }
+        if(nextStep){
+            EditorTexto.setVisible(false);
+            EditorPlaneta.setVisible(false);
+            this.pack();
+            this.setVisible(true);
+        }
+    }//GEN-LAST:event_bu_return2MenuMouseReleased
+
+    private void bu_SaveContinueMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bu_SaveContinueMouseReleased
+        boolean nextStep = evt.getX() < evt.getComponent().getWidth() && evt.getX() > 0;
+        if(nextStep){
+            nextStep = evt.getY() < evt.getComponent().getHeight() && evt.getY() > 0;
+        }
+        if(nextStep){
+            guardarArchivo(direccion);
+            if(importarArchivo(direccion)){
+                EditorTexto.setVisible(false);
+                EditorPlaneta.setVisible(true);
+            }
+            
+        }
+    }//GEN-LAST:event_bu_SaveContinueMouseReleased
+
+    private void bu_newMapMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bu_newMapMouseReleased
+        boolean nextStep = evt.getX() < evt.getComponent().getWidth() && evt.getX() > 0;
+        if(nextStep){
+            nextStep = evt.getY() < evt.getComponent().getHeight() && evt.getY() > 0;
+        }
+        if(nextStep){
+            JOptionPane.showMessageDialog(this, "Recuerda hacer click derecho encima del espacio", "Tips", JOptionPane.INFORMATION_MESSAGE);
+            EditorPlaneta.setVisible(true);
+            this.setVisible(false);
+        }
+    }//GEN-LAST:event_bu_newMapMouseReleased
 
     /**
      * @param args the command line arguments
@@ -181,18 +466,128 @@ public class main extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JFrame Planetas;
+    private javax.swing.JFrame EditorPlaneta;
+    private javax.swing.JFrame EditorTexto;
     private javax.swing.JTextArea TeAr_Grafos;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel bu_SaveContinue;
+    private javax.swing.JLabel bu_fromImport;
+    private javax.swing.JLabel bu_fromImportDefault;
+    private javax.swing.JLabel bu_newMap;
+    private javax.swing.JLabel bu_return2Menu;
+    private javax.swing.JLabel bu_return2Menu1;
+    private javax.swing.JLabel image_Universo;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JMenuItem menu_Abrir;
+    private javax.swing.JMenuItem menu_Cargar;
+    private javax.swing.JMenuItem menu_Guardar;
+    private javax.swing.JLabel nasaLogo;
+    private javax.swing.JLabel nasaLogo1;
+    private javax.swing.JPanel panelUniverso;
     // End of variables declaration//GEN-END:variables
 
-    private void importarArchivo(String direccion) {
+    private void crearArchivoPredeterminado() {
+        try {
+            FileWriter output = new FileWriter("./predeterminado.txt");
+            output.write("Planeta X:Planeta Y:Planeta Z\n"
+                    + "Planeta X -3-> Planeta Z\n"
+                    + "Planeta X -2-> Planeta Y\n"
+                    + "Planeta Y -5-> Planeta Z\n"
+                    + "Planeta Z -3-> Planeta X");
+            output.flush();
+            output.close();
+        } catch (FileNotFoundException ex1) {
+             JOptionPane.showMessageDialog(this, ex1.getMessage(), "Error al crear archivo", JOptionPane.ERROR_MESSAGE);
+        } catch (IOException ex1) {
+             JOptionPane.showMessageDialog(this, ex1.getMessage(), "Error en archivo", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void leerArchivo() {
+        JFileChooser elegirArchivo = new JFileChooser();
+        FileFilter filtro = new FileNameExtensionFilter("Texto", "txt");
+        elegirArchivo.setFileFilter(filtro);
+        elegirArchivo.setCurrentDirectory(new File("."));
+        if (elegirArchivo.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            File archivo = elegirArchivo.getSelectedFile();
+            try {
+                Scanner read = new Scanner(archivo);
+                TeAr_Grafos.setText(read.nextLine() + "\n");
+                while (read.hasNext()) {
+                    TeAr_Grafos.append(read.nextLine() + "\n");
+
+                }
+                direccion = elegirArchivo.getSelectedFile().getAbsolutePath();
+            } catch (FileNotFoundException ex) {
+                 JOptionPane.showMessageDialog(this, ex.getMessage(), "Error al leer archivo", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+    private void leerArchivo(String direccion) {
+        try {
+            Scanner read = new Scanner(new File(direccion));
+            TeAr_Grafos.setText(read.nextLine() + "\n");
+            while (read.hasNext()) {
+                TeAr_Grafos.append(read.nextLine() + "\n");
+            }
+        } catch (FileNotFoundException ex) {
+             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error al leer archivo", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public void guardarArchivo() {
+        try {
+            JFileChooser elegirArchivo = new JFileChooser();
+            FileFilter filtro = new FileNameExtensionFilter("Texto", "txt");
+            elegirArchivo.setFileFilter(filtro);
+            elegirArchivo.setCurrentDirectory(new File("."));
+            if (elegirArchivo.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+                String archivo = elegirArchivo.getSelectedFile() + "";
+                if (!archivo.contains(".txt")) {
+                    archivo += ".txt";
+                }
+                FileWriter output = new FileWriter(archivo);
+                output.write(TeAr_Grafos.getText());
+                output.flush();
+                output.close();
+            }
+        } catch (FileNotFoundException ex) {
+             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (IOException ex) {
+             JOptionPane.showMessageDialog(this, "Problema al escribir al archivo", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    public void guardarArchivo(String direccion){
+        try {
+            FileWriter output = new FileWriter(direccion);
+            output.write(TeAr_Grafos.getText());
+            output.flush();
+            output.close();
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Problema al escribir al archivo", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    public void exportarArchivo(){
+        
+    }
+    
+    private boolean importarArchivo() {
+        JFileChooser dirFile = new JFileChooser();
+        dirFile.setCurrentDirectory(new File("."));
+        if(dirFile.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){
+            direccion = dirFile.getSelectedFile().getAbsolutePath();
+            return importarArchivo(direccion);
+        }
+        return false;
+    }
+    private boolean importarArchivo(String direccion) {
         try {
             Scanner readGrafo = new Scanner(new File(direccion));
             readGrafo.useDelimiter("\n");
@@ -225,93 +620,19 @@ public class main extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Se logro cargar correctamente el archivo");
         } catch (FileNotFoundException ex) {
             crearArchivoPredeterminado();
+            return false;
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error al leer archivo", JOptionPane.ERROR_MESSAGE);
-            ex.printStackTrace();
-            int option = JOptionPane.showConfirmDialog(this, "¿Desea editar el archivo?");
-            if (option == JOptionPane.OK_OPTION) {
-                leerArchivo(direccion);
-            }
-        }
-
-    }
-
-    private void crearArchivoPredeterminado() {
-        try {
-            FileWriter output = new FileWriter("./predeterminado.txt");
-            output.write("Planeta X:Planeta Y:Planeta Z\n"
-                    + "Planeta X -3-> Planeta Z\n"
-                    + "Planeta X -2-> Planeta Y\n"
-                    + "Planeta Y -5-> Planeta Z\n"
-                    + "Planeta Z -3-> Planeta X");
-            output.flush();
-            output.close();
-        } catch (FileNotFoundException ex1) {
-            Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex1);
-        } catch (IOException ex1) {
-            Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex1);
-        }
-    }
-
-    private void leerArchivo(String direccion) {
-        try {
-            Scanner read = new Scanner(new File(direccion));
-            TeAr_Grafos.setText(read.nextLine() + "\n");
-            while (read.hasNext()) {
-                TeAr_Grafos.append(read.nextLine() + "\n");
-            }
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    private void leerArchivo() {
-        JFileChooser elegirArchivo = new JFileChooser();
-        FileFilter filtro = new FileNameExtensionFilter("Texto", "txt");
-        elegirArchivo.setFileFilter(filtro);
-        elegirArchivo.setCurrentDirectory(new File("."));
-        if (elegirArchivo.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            File archivo = elegirArchivo.getSelectedFile();
-            try {
-                Scanner read = new Scanner(archivo);
-                TeAr_Grafos.setText(read.nextLine() + "\n");
-                while (read.hasNext()) {
-                    TeAr_Grafos.append(read.nextLine() + "\n");
-
+            if(!EditorTexto.isVisible()){
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error al leer archivo", JOptionPane.ERROR_MESSAGE);
+                int option = JOptionPane.showConfirmDialog(this, "¿Desea editar el archivo?");
+                if (option == JOptionPane.OK_OPTION) {
+                    leerArchivo(direccion);
+                    this.setVisible(false);
+                    EditorTexto.setVisible(true);
                 }
-                direccion = elegirArchivo.getSelectedFile().getAbsolutePath();
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(main.class
-                        .getName()).log(Level.SEVERE, null, ex);
             }
+            return false;
         }
-    }
-
-    public void guardarArchivo() {
-        try {
-            JFileChooser elegirArchivo = new JFileChooser();
-            FileFilter filtro = new FileNameExtensionFilter("Texto", "txt");
-            elegirArchivo.setFileFilter(filtro);
-            elegirArchivo.setCurrentDirectory(new File("."));
-            if (elegirArchivo.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-                String archivo = elegirArchivo.getSelectedFile() + "";
-                if (!archivo.contains(".txt")) {
-                    archivo += ".txt";
-                }
-                FileWriter output = new FileWriter(archivo);
-                output.write(TeAr_Grafos.getText());
-                output.flush();
-                output.close();
-            }
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(main.class
-                    .getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(main.class
-                    .getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    public void exportarArchivo(){
-        
+        return true;
     }
 }
