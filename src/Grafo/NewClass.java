@@ -7,13 +7,14 @@ package Grafo;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author Isaias
  */
-public class NewClass {
+public class NewClass extends JFrame{
     public static void main(String[] args) {
         TDAGrafo grafo = new TDAGrafo(10);
         try {
@@ -30,7 +31,7 @@ public class NewClass {
         grafo.addArista(0, 1, 2);
         grafo.addArista(1, 2, 1);
         grafo.addArista(2, 0, 1);
-        grafo.addArista(1, 3, 1);
+        grafo.addArista(1, 3, 0);
         grafo.addArista(2, 3, 1);
         grafo.addArista(3, 0, 1);
         System.out.println(grafo.toString());

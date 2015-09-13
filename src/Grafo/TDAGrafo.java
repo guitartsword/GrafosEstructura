@@ -19,7 +19,7 @@ public class TDAGrafo {
     }
     
     public boolean addArista(int Node1, int Node2, int Peso){
-        if(Node1 == Node2){
+        if(Node1 == Node2 || Peso < 0){
             return false;
         }
         if(listaNodos[Node1] == null  || listaNodos[Node2] == null){
@@ -59,16 +59,25 @@ public class TDAGrafo {
         }
         listaNodos[nodeControl++] = new Nodo(listaNodos.length, identidad);
     }
+    public Nodo[] getNodos(){
+        return listaNodos;
+    }
+    public int getNodosSize(){
+        return nodeControl;
+    }
     @Override
     public String toString(){
-        String retStr = "Vertices: " + nodeControl + "\n\n";
-        for(int i = 0; i < nodeControl; i++){
-            retStr += listaNodos[i].getIdentidad();
-            int aristas = listaNodos[i].getArrayControl();
+        String retStr = "";
+        for(int i = 0; i < nodeControl - 1; i++){
+            retStr += listaNodos[i].getIdentidad() +":";
+        }
+        retStr += listaNodos[nodeControl-1].getIdentidad()+"\n";
+        for (int i = 0; i < nodeControl; i++) {
+            int aristas = listaNodos[i].getAristaCount();
             for(int j = 0; j < aristas; j++){
-                retStr += " -" + listaNodos[i].getPesos()[j] + "-> " + listaNodos[i].getAdyacentes()[j].getIdentidad();
+                retStr += listaNodos[i].getIdentidad() + " -" + listaNodos[i].getPesos()[j] + "-> " 
+                        + listaNodos[i].getAdyacentes()[j].getIdentidad() + "\n";
             }
-            retStr += "\n";
         }
         return retStr;
     }

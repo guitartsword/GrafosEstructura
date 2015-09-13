@@ -14,15 +14,15 @@ import java.util.logging.Logger;
  *
  * @author Isaias
  */
-class Nodo {
+public class Nodo {
     
     private Nodo[] adyacentes;
     private int[] pesos;
     private String identidad;
-    private int arrayControl;
+    private int aristaCount;
             
     public Nodo(int maxAdyacentes, String identidad){
-        arrayControl = 0;
+        aristaCount = 0;
         adyacentes = new Nodo[maxAdyacentes];
         pesos = new int[maxAdyacentes];
         this.identidad = identidad;
@@ -31,7 +31,7 @@ class Nodo {
         /*if(!(addControl < adyacentes.length)){
             throw new Exception("No hay mas nodos para hacer adyacencia");
         }*/
-        for(int i = 0; i < arrayControl; i++){
+        for(int i = 0; i < aristaCount; i++){
             if(adyacentes[i].identidad.equals(adyacente.identidad)){
                 try {
                     throw new Exception("Nodo ya agregado o cambiar la identidad");
@@ -40,8 +40,8 @@ class Nodo {
                 }
             }
         }
-        adyacentes[arrayControl] = adyacente;
-        pesos[arrayControl++] = peso;
+        adyacentes[aristaCount] = adyacente;
+        pesos[aristaCount++] = peso;
     }
     
     public void setIdentidad(String identidad){
@@ -60,8 +60,8 @@ class Nodo {
         return identidad;
     }
 
-    public int getArrayControl() {
-        return arrayControl;
+    public int getAristaCount() {
+        return aristaCount;
     }
     
 }

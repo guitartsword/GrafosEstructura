@@ -5,16 +5,23 @@
  */
 package Main;
 
+import Grafo.Nodo;
 import Grafo.TDAGrafo;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -30,15 +37,17 @@ public class main extends JFrame {
      */
     private TDAGrafo grafo;
     private String direccion = "./predeterminado.txt";
+    private int posX, posY;
     public main() {
         initComponents();
         this.setLocationRelativeTo(null);
         //JFrame del editor de planetas
-        EditorPlaneta.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        EditorPlaneta.pack();
+        EditorPlaneta.setLocationRelativeTo(null);
+        EditorPlaneta.setMinimumSize(EditorPlaneta.getSize());
         ImageIcon universoIcon = new ImageIcon("./Imagenes/Universo.png");
-        universoIcon = new ImageIcon(universoIcon.getImage().getScaledInstance(panelUniverso.getBounds().width, panelUniverso.getBounds().height, Image.SCALE_DEFAULT));
-        image_Universo.setIcon(universoIcon);
-        EditorPlaneta.setLocationRelativeTo(this);
+        universoIcon = new ImageIcon(universoIcon.getImage().getScaledInstance(panelUniverso.getWidth(), panelUniverso.getHeight(), Image.SCALE_DEFAULT));
+        //image_Universo.setIcon(universoIcon);
         //JFrame del editor de texto
         EditorTexto.pack();
         EditorTexto.setLocationRelativeTo(null);
@@ -46,6 +55,8 @@ public class main extends JFrame {
         nasaIcon = new ImageIcon(nasaIcon.getImage().getScaledInstance(130, 103, Image.SCALE_DEFAULT));
         nasaLogo.setIcon(nasaIcon);
         nasaLogo1.setIcon(nasaIcon);
+        //Inicializa el grafo
+        grafo = new TDAGrafo(10);
     }
 
     /**
@@ -70,9 +81,14 @@ public class main extends JFrame {
         menu_Guardar = new javax.swing.JMenuItem();
         EditorPlaneta = new javax.swing.JFrame();
         jPanel4 = new javax.swing.JPanel();
+        panelUniverso = new UniverseJPanel();
         bu_return2Menu1 = new javax.swing.JLabel();
-        panelUniverso = new javax.swing.JPanel();
-        image_Universo = new javax.swing.JLabel();
+        bu_guardarGrafo = new javax.swing.JLabel();
+        popMenu_addPlaneta = new javax.swing.JPopupMenu();
+        pop_addPlaneta = new javax.swing.JMenuItem();
+        popMenu_modPlaneta = new javax.swing.JPopupMenu();
+        pop_modPlaneta = new javax.swing.JMenuItem();
+        pop_delPlaneta = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -192,8 +208,30 @@ public class main extends JFrame {
         );
 
         EditorPlaneta.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        EditorPlaneta.setMinimumSize(new java.awt.Dimension(400, 320));
+        EditorPlaneta.setResizable(false);
 
         jPanel4.setBackground(new java.awt.Color(0, 0, 0));
+        jPanel4.setMinimumSize(new java.awt.Dimension(400, 330));
+
+        panelUniverso.setBackground(new java.awt.Color(51, 51, 51));
+        panelUniverso.setAutoscrolls(true);
+        panelUniverso.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                panelUniversoMousePressed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelUniversoLayout = new javax.swing.GroupLayout(panelUniverso);
+        panelUniverso.setLayout(panelUniversoLayout);
+        panelUniversoLayout.setHorizontalGroup(
+            panelUniversoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 806, Short.MAX_VALUE)
+        );
+        panelUniversoLayout.setVerticalGroup(
+            panelUniversoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 476, Short.MAX_VALUE)
+        );
 
         bu_return2Menu1.setBackground(new java.awt.Color(0, 0, 0));
         bu_return2Menu1.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
@@ -207,35 +245,38 @@ public class main extends JFrame {
             }
         });
 
-        panelUniverso.setBackground(new java.awt.Color(51, 51, 51));
-
-        javax.swing.GroupLayout panelUniversoLayout = new javax.swing.GroupLayout(panelUniverso);
-        panelUniverso.setLayout(panelUniversoLayout);
-        panelUniversoLayout.setHorizontalGroup(
-            panelUniversoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(image_Universo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        panelUniversoLayout.setVerticalGroup(
-            panelUniversoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(image_Universo, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
-        );
+        bu_guardarGrafo.setBackground(new java.awt.Color(0, 0, 0));
+        bu_guardarGrafo.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        bu_guardarGrafo.setForeground(new java.awt.Color(204, 204, 204));
+        bu_guardarGrafo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        bu_guardarGrafo.setText("Guardar mapa planetario");
+        bu_guardarGrafo.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 102, 102), new java.awt.Color(204, 204, 204)));
+        bu_guardarGrafo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                bu_guardarGrafobu_return2MenuMouseReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(bu_return2Menu1, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
-                .addContainerGap())
             .addComponent(panelUniverso, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(bu_guardarGrafo, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(bu_return2Menu1, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addComponent(panelUniverso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addComponent(bu_return2Menu1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bu_return2Menu1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bu_guardarGrafo, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -249,6 +290,21 @@ public class main extends JFrame {
             EditorPlanetaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
+
+        pop_addPlaneta.setText("Agregar Planeta");
+        pop_addPlaneta.setToolTipText("");
+        pop_addPlaneta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pop_addPlanetaActionPerformed(evt);
+            }
+        });
+        popMenu_addPlaneta.add(pop_addPlaneta);
+
+        pop_modPlaneta.setText("Modificar Planeta");
+        popMenu_modPlaneta.add(pop_modPlaneta);
+
+        pop_delPlaneta.setText("Eliminar Planeta");
+        popMenu_modPlaneta.add(pop_delPlaneta);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -430,6 +486,37 @@ public class main extends JFrame {
         }
     }//GEN-LAST:event_bu_newMapMouseReleased
 
+    private void panelUniversoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelUniversoMousePressed
+        boolean nextStep = evt.getX() < evt.getComponent().getWidth() && evt.getX() > 0;
+        if(nextStep){
+            nextStep = evt.getY() < evt.getComponent().getHeight() && evt.getY() > 0;
+        }
+        if(nextStep && evt.isMetaDown()){
+            posX = evt.getX();
+            posY = evt.getY();
+            popMenu_addPlaneta.show(evt.getComponent(), evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_panelUniversoMousePressed
+
+    private void pop_addPlanetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pop_addPlanetaActionPerformed
+        Nodo nuevo = null;
+        try {
+            grafo.addNodo(JOptionPane.showInputDialog(EditorPlaneta, "Ingrese el nombre del planeta: "));
+            nuevo = grafo.getNodos()[grafo.getNodosSize()-1];
+            drawPlanetAt(popMenu_addPlaneta.getX(), popMenu_addPlaneta.getY(), nuevo.getIdentidad());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(EditorPlaneta, ex.getMessage(),"Error al agregar nodo", JOptionPane.ERROR_MESSAGE);
+        }
+        
+    }//GEN-LAST:event_pop_addPlanetaActionPerformed
+
+    private void bu_guardarGrafobu_return2MenuMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bu_guardarGrafobu_return2MenuMouseReleased
+        if(evt.getClickCount() == 0)
+            exportarArchivo();
+        else
+            exportarArchivo(direccion);
+    }//GEN-LAST:event_bu_guardarGrafobu_return2MenuMouseReleased
+
     /**
      * @param args the command line arguments
      */
@@ -472,10 +559,10 @@ public class main extends JFrame {
     private javax.swing.JLabel bu_SaveContinue;
     private javax.swing.JLabel bu_fromImport;
     private javax.swing.JLabel bu_fromImportDefault;
+    private javax.swing.JLabel bu_guardarGrafo;
     private javax.swing.JLabel bu_newMap;
     private javax.swing.JLabel bu_return2Menu;
     private javax.swing.JLabel bu_return2Menu1;
-    private javax.swing.JLabel image_Universo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
@@ -490,6 +577,11 @@ public class main extends JFrame {
     private javax.swing.JLabel nasaLogo;
     private javax.swing.JLabel nasaLogo1;
     private javax.swing.JPanel panelUniverso;
+    private javax.swing.JPopupMenu popMenu_addPlaneta;
+    private javax.swing.JPopupMenu popMenu_modPlaneta;
+    private javax.swing.JMenuItem pop_addPlaneta;
+    private javax.swing.JMenuItem pop_delPlaneta;
+    private javax.swing.JMenuItem pop_modPlaneta;
     // End of variables declaration//GEN-END:variables
 
     private void crearArchivoPredeterminado() {
@@ -575,7 +667,34 @@ public class main extends JFrame {
     }
     
     public void exportarArchivo(){
-        
+        try {
+            JFileChooser elegirArchivo = new JFileChooser();
+            FileFilter filtro = new FileNameExtensionFilter("Texto", "txt");
+            elegirArchivo.setFileFilter(filtro);
+            elegirArchivo.setCurrentDirectory(new File("."));
+            if (elegirArchivo.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+                String archivo = elegirArchivo.getSelectedFile() + "";
+                if (!archivo.contains(".txt")) {
+                    archivo += ".txt";
+                }
+                FileWriter output = new FileWriter(archivo);
+                output.write(grafo.toString());
+                output.flush();
+                output.close();
+            }
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Problema al escribir al archivo", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    public void exportarArchivo(String direccion){
+        try {
+            FileWriter output = new FileWriter(direccion);
+            output.write(TeAr_Grafos.getText());
+            output.flush();
+            output.close();
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Problema al escribir al archivo", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
     
     private boolean importarArchivo() {
@@ -634,5 +753,17 @@ public class main extends JFrame {
             return false;
         }
         return true;
+    }
+
+    private void drawPlanetAt(int x, int y, String name) {
+        JLabel newPlanet = new JLabel();
+        newPlanet.setForeground(Color.red);
+        newPlanet.setText(name);
+        newPlanet.setLocation(posX-25, posY-25);
+        newPlanet.setIcon(new ImageIcon("./Imagenes/Planeta.png"));
+        newPlanet.setSize(50,50);
+        panelUniverso.add(newPlanet);
+        panelUniverso.repaint();
+        System.out.println("Agregado");
     }
 }
