@@ -15,16 +15,13 @@ import java.util.logging.Logger;
  * @author Isaias
  */
 public class Nodo {
-    
-    private Nodo[] adyacentes;
-    private int[] pesos;
+    private Arista[] aristas;
     private String identidad;
     private int aristaCount;
             
     public Nodo(int maxAdyacentes, String identidad){
         aristaCount = 0;
-        adyacentes = new Nodo[maxAdyacentes];
-        pesos = new int[maxAdyacentes];
+        aristas = new Arista[maxAdyacentes];
         this.identidad = identidad;
     }
     public void addAdyacencia(Nodo adyacente, int peso){
@@ -32,7 +29,7 @@ public class Nodo {
             throw new Exception("No hay mas nodos para hacer adyacencia");
         }*/
         for(int i = 0; i < aristaCount; i++){
-            if(adyacentes[i].identidad.equals(adyacente.identidad)){
+            if(aristas[i].getAdyacente().identidad.equals(adyacente.identidad)){
                 try {
                     throw new Exception("Nodo ya agregado o cambiar la identidad");
                 } catch (Exception ex) {
@@ -40,20 +37,11 @@ public class Nodo {
                 }
             }
         }
-        adyacentes[aristaCount] = adyacente;
-        pesos[aristaCount++] = peso;
+        aristas[aristaCount++] =  new Arista(adyacente,peso);
     }
     
     public void setIdentidad(String identidad){
         this.identidad = identidad;
-    }
-
-    public Nodo[] getAdyacentes() {
-        return adyacentes;
-    }
-
-    public int[] getPesos() {
-        return pesos;
     }
 
     public String getIdentidad() {
@@ -63,5 +51,16 @@ public class Nodo {
     public int getAristaCount() {
         return aristaCount;
     }
-    
+
+    public Arista[] getAristas() {
+        return aristas;
+    }
+
+    public void setAristas(Arista[] aristas) {
+        this.aristas = aristas;
+    }
+    @Override
+    public String toString(){
+        return identidad;
+    }
 }

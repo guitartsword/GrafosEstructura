@@ -5,24 +5,32 @@
  */
 package Main;
 
+import Grafo.Arista;
 import Grafo.Nodo;
 import Grafo.TDAGrafo;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.TextField;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -35,9 +43,14 @@ public class main extends JFrame {
     /**
      * Creates new form main
      */
+    DefaultListModel<Arista> listaAristas = new DefaultListModel();
+    DefaultComboBoxModel<Nodo> listaPlanetas = new DefaultComboBoxModel();
     private TDAGrafo grafo;
     private String direccion = "./predeterminado.txt";
     private int posX, posY;
+    private Nodo selectedPlanet;
+    
+    
     public main() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -84,6 +97,24 @@ public class main extends JFrame {
         panelUniverso = new UniverseJPanel();
         bu_return2Menu1 = new javax.swing.JLabel();
         bu_guardarGrafo = new javax.swing.JLabel();
+        ModificarPlaneta = new javax.swing.JDialog();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        tefi_planetName = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        list_aristas = new javax.swing.JList();
+        text_info1 = new javax.swing.JLabel();
+        bu_guardarPlaneta = new javax.swing.JLabel();
+        text_planetName = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        bu_modificarArista = new javax.swing.JLabel();
+        bu_eliminarArista = new javax.swing.JLabel();
+        bu_agregarArista = new javax.swing.JLabel();
+        tefi_pesoArista = new javax.swing.JTextField();
+        cobo_planetaDestino = new javax.swing.JComboBox();
+        AgregarAristas = new javax.swing.JDialog();
+        jPanel6 = new javax.swing.JPanel();
         popMenu_addPlaneta = new javax.swing.JPopupMenu();
         pop_addPlaneta = new javax.swing.JMenuItem();
         popMenu_modPlaneta = new javax.swing.JPopupMenu();
@@ -226,7 +257,7 @@ public class main extends JFrame {
         panelUniverso.setLayout(panelUniversoLayout);
         panelUniversoLayout.setHorizontalGroup(
             panelUniversoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 806, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         panelUniversoLayout.setVerticalGroup(
             panelUniversoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -291,6 +322,208 @@ public class main extends JFrame {
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
+        ModificarPlaneta.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        jPanel5.setBackground(new java.awt.Color(0, 0, 0));
+
+        jLabel2.setForeground(new java.awt.Color(204, 204, 204));
+        jLabel2.setText("Nombre: ");
+
+        tefi_planetName.setBackground(new java.awt.Color(51, 51, 51));
+        tefi_planetName.setForeground(new java.awt.Color(221, 221, 221));
+
+        list_aristas.setBackground(new java.awt.Color(51, 51, 51));
+        list_aristas.setForeground(new java.awt.Color(221, 221, 221));
+        list_aristas.setToolTipText("Doble click para modificar");
+        list_aristas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                list_aristasMousePressed(evt);
+            }
+        });
+        jScrollPane2.setViewportView(list_aristas);
+
+        text_info1.setFont(new java.awt.Font("Times New Roman", 2, 18)); // NOI18N
+        text_info1.setForeground(new java.awt.Color(204, 204, 204));
+        text_info1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        text_info1.setText("Planetas a los que se puede viajar");
+        text_info1.setToolTipText("");
+
+        bu_guardarPlaneta.setBackground(new java.awt.Color(0, 0, 0));
+        bu_guardarPlaneta.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        bu_guardarPlaneta.setForeground(new java.awt.Color(204, 204, 204));
+        bu_guardarPlaneta.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        bu_guardarPlaneta.setText("Guardar planeta");
+        bu_guardarPlaneta.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 102, 102), new java.awt.Color(204, 204, 204)));
+        bu_guardarPlaneta.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                bu_guardarPlanetaMouseReleased(evt);
+            }
+        });
+
+        text_planetName.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        text_planetName.setForeground(new java.awt.Color(204, 204, 204));
+        text_planetName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        text_planetName.setText("Nombre del planeta");
+        text_planetName.setToolTipText("");
+
+        jLabel3.setForeground(new java.awt.Color(204, 204, 204));
+        jLabel3.setText("Planetas Disponibles:");
+
+        jLabel4.setForeground(new java.awt.Color(204, 204, 204));
+        jLabel4.setText("Tiempo (Años luz):");
+
+        bu_modificarArista.setBackground(new java.awt.Color(0, 0, 0));
+        bu_modificarArista.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        bu_modificarArista.setForeground(new java.awt.Color(204, 204, 204));
+        bu_modificarArista.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        bu_modificarArista.setText("Modificar");
+        bu_modificarArista.setToolTipText("Modifica el elemento en la lista con lo ingresado arriba");
+        bu_modificarArista.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 102, 102), new java.awt.Color(204, 204, 204)));
+        bu_modificarArista.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                bu_modificarAristaMouseReleased(evt);
+            }
+        });
+
+        bu_eliminarArista.setBackground(new java.awt.Color(0, 0, 0));
+        bu_eliminarArista.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        bu_eliminarArista.setForeground(new java.awt.Color(204, 204, 204));
+        bu_eliminarArista.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        bu_eliminarArista.setText("Eliminar");
+        bu_eliminarArista.setToolTipText("Elimina el camino seleccionado en la lista");
+        bu_eliminarArista.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 102, 102), new java.awt.Color(204, 204, 204)));
+        bu_eliminarArista.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                bu_eliminarAristaMouseReleased(evt);
+            }
+        });
+
+        bu_agregarArista.setBackground(new java.awt.Color(0, 0, 0));
+        bu_agregarArista.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        bu_agregarArista.setForeground(new java.awt.Color(204, 204, 204));
+        bu_agregarArista.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        bu_agregarArista.setText("Agregar");
+        bu_agregarArista.setToolTipText("Agrega un elemento con los datos ingresados");
+        bu_agregarArista.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 102, 102), new java.awt.Color(204, 204, 204)));
+        bu_agregarArista.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                bu_agregarAristaMouseReleased(evt);
+            }
+        });
+
+        tefi_pesoArista.setBackground(new java.awt.Color(51, 51, 51));
+        tefi_pesoArista.setForeground(new java.awt.Color(221, 221, 221));
+        tefi_pesoArista.setSelectionColor(new java.awt.Color(0, 51, 51));
+        tefi_pesoArista.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tefi_pesoAristaKeyTyped(evt);
+            }
+        });
+
+        cobo_planetaDestino.setBackground(new java.awt.Color(0, 0, 0));
+        cobo_planetaDestino.setForeground(new java.awt.Color(204, 204, 204));
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tefi_planetName))
+                    .addComponent(bu_guardarPlaneta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(text_info1, javax.swing.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE)
+                    .addComponent(text_planetName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(bu_modificarArista, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                                .addComponent(bu_agregarArista, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(bu_eliminarArista, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(tefi_pesoArista)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel4))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(cobo_planetaDestino, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap())
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(text_planetName)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(tefi_planetName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(text_info1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cobo_planetaDestino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tefi_pesoArista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(bu_eliminarArista, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(bu_agregarArista, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(bu_modificarArista, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(1, 1, 1))
+                    .addComponent(jScrollPane2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(bu_guardarPlaneta, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout ModificarPlanetaLayout = new javax.swing.GroupLayout(ModificarPlaneta.getContentPane());
+        ModificarPlaneta.getContentPane().setLayout(ModificarPlanetaLayout);
+        ModificarPlanetaLayout.setHorizontalGroup(
+            ModificarPlanetaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        ModificarPlanetaLayout.setVerticalGroup(
+            ModificarPlanetaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        jPanel6.setBackground(new java.awt.Color(0, 0, 0));
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout AgregarAristasLayout = new javax.swing.GroupLayout(AgregarAristas.getContentPane());
+        AgregarAristas.getContentPane().setLayout(AgregarAristasLayout);
+        AgregarAristasLayout.setHorizontalGroup(
+            AgregarAristasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        AgregarAristasLayout.setVerticalGroup(
+            AgregarAristasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
         pop_addPlaneta.setText("Agregar Planeta");
         pop_addPlaneta.setToolTipText("");
         pop_addPlaneta.addActionListener(new java.awt.event.ActionListener() {
@@ -301,9 +534,19 @@ public class main extends JFrame {
         popMenu_addPlaneta.add(pop_addPlaneta);
 
         pop_modPlaneta.setText("Modificar Planeta");
+        pop_modPlaneta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pop_modPlanetaActionPerformed(evt);
+            }
+        });
         popMenu_modPlaneta.add(pop_modPlaneta);
 
         pop_delPlaneta.setText("Eliminar Planeta");
+        pop_delPlaneta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pop_delPlanetaActionPerformed(evt);
+            }
+        });
         popMenu_modPlaneta.add(pop_delPlaneta);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -499,11 +742,11 @@ public class main extends JFrame {
     }//GEN-LAST:event_panelUniversoMousePressed
 
     private void pop_addPlanetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pop_addPlanetaActionPerformed
-        Nodo nuevo = null;
+        Nodo nuevo;
         try {
             grafo.addNodo(JOptionPane.showInputDialog(EditorPlaneta, "Ingrese el nombre del planeta: "));
             nuevo = grafo.getNodos()[grafo.getNodosSize()-1];
-            drawPlanetAt(popMenu_addPlaneta.getX(), popMenu_addPlaneta.getY(), nuevo.getIdentidad());
+            drawPlanetAt(nuevo);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(EditorPlaneta, ex.getMessage(),"Error al agregar nodo", JOptionPane.ERROR_MESSAGE);
         }
@@ -516,6 +759,100 @@ public class main extends JFrame {
         else
             exportarArchivo(direccion);
     }//GEN-LAST:event_bu_guardarGrafobu_return2MenuMouseReleased
+
+    private void bu_guardarPlanetaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bu_guardarPlanetaMouseReleased
+        boolean nextStep = evt.getX() < evt.getComponent().getWidth() && evt.getX() > 0;
+        if(nextStep){
+            nextStep = evt.getY() < evt.getComponent().getHeight() && evt.getY() > 0;
+        }
+        if(nextStep){
+            for(int i = 0; i < grafo.getNodosSize(); i++){
+                Nodo principal = grafo.getNodos()[i];
+                if(principal.getIdentidad().equals(text_planetName.getText())){
+                    principal.setIdentidad(tefi_planetName.getText());
+                    Arista[] lista = new Arista[listaAristas.size()];
+                    for (int j = 0; j < listaAristas.size(); j++) {
+                        lista[j] = listaAristas.getElementAt(j);
+                    }
+                    principal.setAristas(lista);
+                    AgregarAristas.setVisible(false);
+                    break;
+                }
+            }
+        }
+    }//GEN-LAST:event_bu_guardarPlanetaMouseReleased
+
+    private void pop_modPlanetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pop_modPlanetaActionPerformed
+        ModificarPlaneta.pack();
+        ModificarPlaneta.setLocationRelativeTo(EditorPlaneta);
+        ModificarPlaneta.setVisible(true);
+    }//GEN-LAST:event_pop_modPlanetaActionPerformed
+
+    private void list_aristasMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_list_aristasMousePressed
+        if(evt.getClickCount() > 1){
+            AgregarAristas.pack();
+            AgregarAristas.setLocationRelativeTo(ModificarPlaneta);
+            AgregarAristas.setVisible(true);
+        }
+    }//GEN-LAST:event_list_aristasMousePressed
+
+    private void bu_modificarAristaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bu_modificarAristaMouseReleased
+        boolean nextStep = evt.getX() < evt.getComponent().getWidth() && evt.getX() > 0;
+        if(nextStep){
+            nextStep = evt.getY() < evt.getComponent().getHeight() && evt.getY() > 0;
+        }
+        if(nextStep){
+            //TODO CODE HERE
+        }
+    }//GEN-LAST:event_bu_modificarAristaMouseReleased
+
+    private void bu_eliminarAristaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bu_eliminarAristaMouseReleased
+        boolean nextStep = evt.getX() < evt.getComponent().getWidth() && evt.getX() > 0;
+        if(nextStep){
+            nextStep = evt.getY() < evt.getComponent().getHeight() && evt.getY() > 0;
+        }
+        if(nextStep){
+            //TODO CODE HERE
+        }
+    }//GEN-LAST:event_bu_eliminarAristaMouseReleased
+
+    private void bu_agregarAristaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bu_agregarAristaMouseReleased
+        boolean nextStep = evt.getX() < evt.getComponent().getWidth() && evt.getX() > 0;
+        if(nextStep){
+            nextStep = evt.getY() < evt.getComponent().getHeight() && evt.getY() > 0;
+        }
+        if(nextStep){
+            try{
+                int tiempo = Integer.parseInt(tefi_pesoArista.getText());
+                Nodo adyacente = (Nodo)cobo_planetaDestino.getSelectedItem();
+                selectedPlanet.addAdyacencia(adyacente, tiempo);
+                //Actualizar lista y comboBox
+                listaAristas.addElement(selectedPlanet.getAristas()[selectedPlanet.getAristaCount()-1]);
+                list_aristas.setModel(listaAristas);
+
+                listaPlanetas.removeElementAt(cobo_planetaDestino.getSelectedIndex());
+                cobo_planetaDestino.setModel(listaPlanetas);
+            }catch(NumberFormatException e){
+                JOptionPane.showMessageDialog(null, "Ingrese numeros correctos porfavor!");
+            }
+            
+        }
+    }//GEN-LAST:event_bu_agregarAristaMouseReleased
+
+    private void tefi_pesoAristaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tefi_pesoAristaKeyTyped
+        char input = evt.getKeyChar();
+        if(!Character.isDigit(input) && input != 65535 && input != 8 && input != 10){
+            JOptionPane.showMessageDialog(null, "Solo puede ingresar numeros, usted ingreso: " + (int)input );
+        }
+    }//GEN-LAST:event_tefi_pesoAristaKeyTyped
+
+    private void pop_delPlanetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pop_delPlanetaActionPerformed
+        PlanetaJLabel delPlanet = (PlanetaJLabel) panelUniverso.getComponentAt(posX, posY);
+        grafo.removeNodo(delPlanet.getPlaneta().getIdentidad());
+        panelUniverso.remove(delPlanet);
+        panelUniverso.repaint();
+        
+    }//GEN-LAST:event_pop_delPlanetaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -553,24 +890,38 @@ public class main extends JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JDialog AgregarAristas;
     private javax.swing.JFrame EditorPlaneta;
     private javax.swing.JFrame EditorTexto;
+    private javax.swing.JDialog ModificarPlaneta;
     private javax.swing.JTextArea TeAr_Grafos;
     private javax.swing.JLabel bu_SaveContinue;
+    private javax.swing.JLabel bu_agregarArista;
+    private javax.swing.JLabel bu_eliminarArista;
     private javax.swing.JLabel bu_fromImport;
     private javax.swing.JLabel bu_fromImportDefault;
     private javax.swing.JLabel bu_guardarGrafo;
+    private javax.swing.JLabel bu_guardarPlaneta;
+    private javax.swing.JLabel bu_modificarArista;
     private javax.swing.JLabel bu_newMap;
     private javax.swing.JLabel bu_return2Menu;
     private javax.swing.JLabel bu_return2Menu1;
+    private javax.swing.JComboBox cobo_planetaDestino;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JList list_aristas;
     private javax.swing.JMenuItem menu_Abrir;
     private javax.swing.JMenuItem menu_Cargar;
     private javax.swing.JMenuItem menu_Guardar;
@@ -582,6 +933,10 @@ public class main extends JFrame {
     private javax.swing.JMenuItem pop_addPlaneta;
     private javax.swing.JMenuItem pop_delPlaneta;
     private javax.swing.JMenuItem pop_modPlaneta;
+    private javax.swing.JTextField tefi_pesoArista;
+    private javax.swing.JTextField tefi_planetName;
+    private javax.swing.JLabel text_info1;
+    private javax.swing.JLabel text_planetName;
     // End of variables declaration//GEN-END:variables
 
     private void crearArchivoPredeterminado() {
@@ -755,15 +1110,52 @@ public class main extends JFrame {
         return true;
     }
 
-    private void drawPlanetAt(int x, int y, String name) {
-        JLabel newPlanet = new JLabel();
-        newPlanet.setForeground(Color.red);
-        newPlanet.setText(name);
+    private void drawPlanetAt(Nodo planeta) {
+        PlanetaJLabel newPlanet = new PlanetaJLabel();
+        newPlanet.setPlaneta(planeta);
+        newPlanet.setForeground(Color.RED);
+        newPlanet.setFont(new Font("Arial Black", Font.PLAIN, 12));
+        newPlanet.setText(planeta.getIdentidad());
+        newPlanet.setHorizontalTextPosition(JLabel.CENTER);
         newPlanet.setLocation(posX-25, posY-25);
         newPlanet.setIcon(new ImageIcon("./Imagenes/Planeta.png"));
         newPlanet.setSize(50,50);
+        newPlanet.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent evt){
+                posX=evt.getX();posY=evt.getY();
+                popMenu_modPlaneta.show(evt.getComponent(), posX, posY);
+                String nombre = ((JLabel)evt.getComponent()).getText();
+                tefi_planetName.setText(nombre);
+                text_planetName.setText(nombre);
+                listaAristas.clear();
+                listaPlanetas.removeAllElements();
+                //AGREGA TODOS LOS VERTICES al ComboBox
+                for(int i = 0; i < grafo.getNodosSize(); i++){
+                   Nodo principal = grafo.getNodos()[i];
+                   listaPlanetas.addElement(principal);
+                }
+                for(int i = 0; i < grafo.getNodosSize(); i++){
+                    Nodo principal = grafo.getNodos()[i];
+                    if(principal.getIdentidad().equals(nombre)){
+                        selectedPlanet = principal;
+                        listaPlanetas.removeElement(principal);
+                        for(int j = 0; j < principal.getAristaCount(); j++){
+                           Arista arista = principal.getAristas()[i];
+                           listaAristas.addElement(arista);
+                           listaPlanetas.removeElement(arista.getAdyacente());
+                        }
+                    }
+                }
+                list_aristas.setModel(listaAristas);
+                cobo_planetaDestino.setModel(listaPlanetas);
+            }
+        });
         panelUniverso.add(newPlanet);
         panelUniverso.repaint();
         System.out.println("Agregado");
     }
+    
+    
+
 }

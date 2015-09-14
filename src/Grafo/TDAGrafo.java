@@ -59,6 +59,15 @@ public class TDAGrafo {
         }
         listaNodos[nodeControl++] = new Nodo(listaNodos.length, identidad);
     }
+    public void removeNodo(String identidad){
+        for(int i = 0; i < nodeControl; i++){
+            if(identidad.equals(listaNodos[i].getIdentidad())){
+                listaNodos[i] = null;
+                nodeControl--;
+                break;
+            }
+        }
+    }
     public Nodo[] getNodos(){
         return listaNodos;
     }
@@ -75,8 +84,8 @@ public class TDAGrafo {
         for (int i = 0; i < nodeControl; i++) {
             int aristas = listaNodos[i].getAristaCount();
             for(int j = 0; j < aristas; j++){
-                retStr += listaNodos[i].getIdentidad() + " -" + listaNodos[i].getPesos()[j] + "-> " 
-                        + listaNodos[i].getAdyacentes()[j].getIdentidad() + "\n";
+                retStr += listaNodos[i].getIdentidad() + " -" + listaNodos[i].getAristas()[j].getPeso() + "-> " 
+                        + listaNodos[i].getAristas()[j].getAdyacente().getIdentidad() + "\n";
             }
         }
         return retStr;

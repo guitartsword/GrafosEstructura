@@ -6,7 +6,6 @@
 package Main;
 
 import Grafo.Nodo;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 /**
@@ -14,8 +13,14 @@ import javax.swing.JLabel;
  * @author Isaias
  */
 public class PlanetaJLabel extends JLabel{
-    int posX;
-    int posY;
-    Nodo planeta;
-    ImageIcon iconoPlaneta;
+    private Nodo planeta;
+
+    public Nodo getPlaneta() {
+        return planeta;
+    }
+
+    public void setPlaneta(Nodo planeta) {
+        this.planeta = planeta;
+    }
+    
 }
