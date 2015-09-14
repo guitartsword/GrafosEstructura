@@ -5,30 +5,30 @@
  */
 package Grafo;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author guitartsword
  */
 
 public class TDAGrafo {
-    private Nodo[] listaNodos;
-    private int nodeControl;
-    public TDAGrafo(int maxAdyacencias){
-        listaNodos = new Nodo[maxAdyacencias];
-        nodeControl = 0;
+    private ArrayList<Nodo> listaNodos;
+    public TDAGrafo(){
+        listaNodos = new ArrayList();
+        
     }
     
     public boolean addArista(int Node1, int Node2, int Peso){
         if(Node1 == Node2 || Peso < 0){
             return false;
         }
-        if(listaNodos[Node1] == null  || listaNodos[Node2] == null){
+        try{
+        listaNodos.get(Node1).addAdyacencia(listaNodos.get(Node2), Peso);
+        }catch(Exception e){
+            System.out.println(e.getMessage() + "\nCAUSA: " + e.getCause());
             return false;
         }
-        if(!(Node1 < nodeControl) || !(Node2 < nodeControl)){
-            return false;
-        }
-        listaNodos[Node1].addAdyacencia(listaNodos[Node2], Peso);
         return true;
     }
     public void addArista(String node1ID, String node2ID, int peso) throws Exception{
@@ -36,56 +36,59 @@ public class TDAGrafo {
             throw new Exception("No se puede asignar adyacencia al mismo nodo");
         }
         int Node1 = -1, Node2 = -1;
-        for(int i = 0; i < nodeControl; i++){
-            if(listaNodos[i].getIdentidad().equals(node1ID)){
+        for(int i = 0; i < listaNodos.size(); i++){
+            if(listaNodos.get(i).getIdentidad().equals(node1ID)){
                 Node1 = i;
             }
-            if(listaNodos[i].getIdentidad().equals(node2ID)){
+            if(listaNodos.get(i).getIdentidad().equals(node2ID)){
                 Node2 = i;
             }
         }
         if(Node1 == -1 || Node2 == -1){
             throw new Exception("Uno de los nodos no existe");
         }
-        listaNodos[Node1].addAdyacencia(listaNodos[Node2], peso);
+        listaNodos.get(Node1).addAdyacencia(listaNodos.get(Node2), peso);
     }
     public void addNodo(String identidad) throws Exception{
-        if(nodeControl >= listaNodos.length){
-            throw new Exception("Limite de nodos alcanzados");
-        }
-        for(int i = 0; i < nodeControl; i++){
-            if(identidad.equals(listaNodos[i].getIdentidad()))
+        for(int i = 0; i < listaNodos.size(); i++){
+            if(identidad.equals(listaNodos.get(i).getIdentidad()))
                 throw new Exception("No se puede repetir nombre del nodo");
         }
-        listaNodos[nodeControl++] = new Nodo(listaNodos.length, identidad);
+        listaNodos.add(new Nodo(identidad));
     }
     public void removeNodo(String identidad){
-        for(int i = 0; i < nodeControl; i++){
-            if(identidad.equals(listaNodos[i].getIdentidad())){
-                listaNodos[i] = null;
-                nodeControl--;
-                break;
+        for(int i = 0; i < listaNodos.size(); i++){
+            for(int j = 0; j < listaNodos.get(i).getAristaCount(); j++){
+                if(listaNodos.get(i).getArista(j).getAdyacente().getIdentidad().equals(identidad)){
+                    listaNodos.get(i).removeAdyacencia(j);
+                }
             }
         }
+        for(int i = 0; i < listaNodos.size(); i++){
+            if(identidad.equals(listaNodos.get(i).getIdentidad())){
+                listaNodos.remove(i);
+                break;
+            }
+        }            
     }
-    public Nodo[] getNodos(){
-        return listaNodos;
+    public Nodo getNodo(int index){
+        return listaNodos.get(index);
     }
     public int getNodosSize(){
-        return nodeControl;
+        return listaNodos.size();
     }
     @Override
     public String toString(){
         String retStr = "";
-        for(int i = 0; i < nodeControl - 1; i++){
-            retStr += listaNodos[i].getIdentidad() +":";
+        for(int i = 0; i < listaNodos.size() - 1; i++){
+            retStr += listaNodos.get(i).getIdentidad() +":";
         }
-        retStr += listaNodos[nodeControl-1].getIdentidad()+"\n";
-        for (int i = 0; i < nodeControl; i++) {
-            int aristas = listaNodos[i].getAristaCount();
+        retStr += listaNodos.get(listaNodos.size()-1).getIdentidad()+"\n";
+        for (int i = 0; i < listaNodos.size(); i++) {
+            int aristas = listaNodos.get(i).getAristaCount();
             for(int j = 0; j < aristas; j++){
-                retStr += listaNodos[i].getIdentidad() + " -" + listaNodos[i].getAristas()[j].getPeso() + "-> " 
-                        + listaNodos[i].getAristas()[j].getAdyacente().getIdentidad() + "\n";
+                retStr += listaNodos.get(i).getIdentidad() + " -" + listaNodos.get(i).getArista(j).getPeso() + "-> " 
+                        + listaNodos.get(i).getArista(j).getAdyacente().getIdentidad() + "\n";
             }
         }
         return retStr;

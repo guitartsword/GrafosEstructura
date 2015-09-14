@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
  */
 public class NewClass extends JFrame{
     public static void main(String[] args) {
-        TDAGrafo grafo = new TDAGrafo(10);
+        TDAGrafo grafo = new TDAGrafo();
         try {
             grafo.addNodo("A");
             grafo.addNodo("B");

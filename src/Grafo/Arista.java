@@ -26,11 +26,11 @@ public class Arista {
         return peso;
     }
 
-    void setAdyacente(Nodo adyacente) {
+    public void setAdyacente(Nodo adyacente) {
         this.adyacente = adyacente;
     }
 
-    void setPeso(int peso) {
+    public void setPeso(int peso) {
         this.peso = peso;
     }
 

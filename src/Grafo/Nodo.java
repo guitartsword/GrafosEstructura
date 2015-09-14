@@ -4,8 +4,6 @@
  * and open the template in the editor.
  */
 package Grafo;
-
-import ListaEnlazada.ListaEnlazada;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,29 +13,27 @@ import java.util.logging.Logger;
  * @author Isaias
  */
 public class Nodo {
-    private Arista[] aristas;
+    private ArrayList<Arista> aristas = new ArrayList();
     private String identidad;
-    private int aristaCount;
             
-    public Nodo(int maxAdyacentes, String identidad){
-        aristaCount = 0;
-        aristas = new Arista[maxAdyacentes];
+    public Nodo(String identidad){
         this.identidad = identidad;
     }
-    public void addAdyacencia(Nodo adyacente, int peso){
+    public boolean addAdyacencia(Nodo adyacente, int peso){
         /*if(!(addControl < adyacentes.length)){
-            throw new Exception("No hay mas nodos para hacer adyacencia");
+        throw new Exception("No hay mas nodos para hacer adyacencia");
         }*/
-        for(int i = 0; i < aristaCount; i++){
-            if(aristas[i].getAdyacente().identidad.equals(adyacente.identidad)){
+        for (Arista arista : aristas) {
+            if (arista.getAdyacente().identidad.equals(adyacente.identidad)) {
                 try {
-                    throw new Exception("Nodo ya agregado o cambiar la identidad");
+                    throw new Exception("Nodo ya agregado, cambiar la identidad");
                 } catch (Exception ex) {
-                    Logger.getLogger(Nodo.class.getName()).log(Level.SEVERE, null, ex);
+                    return false;
                 }
             }
         }
-        aristas[aristaCount++] =  new Arista(adyacente,peso);
+        aristas.add(new Arista(adyacente,peso));
+        return true;
     }
     
     public void setIdentidad(String identidad){
@@ -49,18 +45,19 @@ public class Nodo {
     }
 
     public int getAristaCount() {
-        return aristaCount;
+        return aristas.size();
     }
 
-    public Arista[] getAristas() {
-        return aristas;
+    public Arista getArista(int index) {
+        return aristas.get(index);
     }
-
-    public void setAristas(Arista[] aristas) {
-        this.aristas = aristas;
-    }
+    
     @Override
     public String toString(){
         return identidad;
+    }
+
+    public void removeAdyacencia(int index) {
+        aristas.remove(index);
     }
 }
