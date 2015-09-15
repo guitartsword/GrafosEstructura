@@ -80,6 +80,8 @@ public class TDAGrafo {
     @Override
     public String toString(){
         String retStr = "";
+        if(listaNodos.size() == 0)
+            return retStr;
         for(int i = 0; i < listaNodos.size() - 1; i++){
             retStr += listaNodos.get(i).getIdentidad() +":";
         }

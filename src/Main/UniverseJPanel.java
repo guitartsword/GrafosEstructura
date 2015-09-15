@@ -19,7 +19,6 @@ import javax.swing.JPanel;
  */
 class UniverseJPanel extends JPanel {
     private String command="reset";
-    private Color color;
     private ArrayList<PlanetaJLabel> planetas = new ArrayList();
     @Override
     protected void paintComponent(Graphics g) {
@@ -30,18 +29,14 @@ class UniverseJPanel extends JPanel {
             System.out.println("recorriendo planeta: " + planeta.getPlaneta().getIdentidad());
             for(int i = 0; i < planeta.aristaSize(); i++){
                 System.out.println("recorriendo arista que apunta hacia: " + planeta.getPlaneta().getArista(i));
-                planeta.getArista(i).paint(g);
+                planeta.getArista(i).paint(g,planeta.getPlaneta().getArista(i).getPeso());
             }
         }
-    }
-    public void setColor(Color color){
-        this.color = color;
     }
     public void addPlaneta(PlanetaJLabel nuevo){
         planetas.add(nuevo);
         add(nuevo);
     }
-
     public void remove(PlanetaJLabel comp) {
         for(int i = 0; i < planetas.size(); i++){
             System.out.println("recorriendo para borrar");
@@ -52,6 +47,10 @@ class UniverseJPanel extends JPanel {
         }
         super.remove(comp);
     }
-    
+    @Override
+    public void removeAll(){
+        super.removeAll();
+        planetas.clear();
+    }
     
 }

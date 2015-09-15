@@ -8,6 +8,7 @@ package Main;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Objects;
+import java.util.Random;
 
 /**
  *
@@ -15,8 +16,7 @@ import java.util.Objects;
  */
 public class Line {
     private int x1,x2,y1,y2;
-    private Color color = Color.yellow;
-
+    private final Random rand = new Random();
     public Line(int x1, int y1, int x2, int y2) {
         this.x1 = x1;
         this.x2 = x2;
@@ -24,9 +24,23 @@ public class Line {
         this.y2 = y2;
     }
     
-    public void paint(Graphics g){
-        g.setColor(color);
-        g.drawLine(x1, y1, x2, y2);
+    public void paint(Graphics g, int peso){
+        int Red = rand.nextInt(256);
+        int Gre = rand.nextInt(256);
+        int Blu = rand.nextInt(256);
+        while(Red < 225 && Gre < 225 && Blu < 225){
+            if(Red < Gre && Red < Blu)
+                Red = rand.nextInt(256);
+            else if(Gre < Blu)
+                Gre = rand.nextInt(256);
+            else{
+                Blu = rand.nextInt(256);
+            }
+        }
+        g.setColor(new Color(Red, Gre, Blu));
+        g.drawString(peso+"", (x1+(x1+x2)/2)/2, (y1+(y1+y2)/2)/2);
+        g.drawLine(x1-15, y1-15, x2, y2);
+        g.drawLine(x1+15, y1+15, x2, y2);
     }
 
     @Override
@@ -36,7 +50,6 @@ public class Line {
         hash = 47 * hash + this.x2;
         hash = 47 * hash + this.y1;
         hash = 47 * hash + this.y2;
-        hash = 47 * hash + Objects.hashCode(this.color);
         return hash;
     }
     
@@ -59,9 +72,6 @@ public class Line {
             return false;
         }
         if (this.y2 > other.y2 -5 && this.y2 < other.y2 + 5) {
-            return false;
-        }
-        if (!Objects.equals(this.color, other.color)) {
             return false;
         }
         return true;
