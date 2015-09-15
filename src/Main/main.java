@@ -11,6 +11,7 @@ import Grafo.TDAGrafo;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -44,8 +45,10 @@ public class main extends JFrame {
     private TDAGrafo grafo;
     private String direccion = "./predeterminado.txt";
     private int posX, posY;
+    private PlanetaJLabel Start;
+    private PlanetaJLabel End;
     private PlanetaJLabel selectedPlanet;
-    
+    Rocket rocket;
     
     public main() {
         initComponents();
@@ -111,9 +114,11 @@ public class main extends JFrame {
         cobo_planetaDestino = new javax.swing.JComboBox();
         popMenu_addPlaneta = new javax.swing.JPopupMenu();
         pop_addPlaneta = new javax.swing.JMenuItem();
+        pop_buscarCaminos = new javax.swing.JMenuItem();
         popMenu_modPlaneta = new javax.swing.JPopupMenu();
         pop_modPlaneta = new javax.swing.JMenuItem();
         pop_delPlaneta = new javax.swing.JMenuItem();
+        pop_asignarPrincipal = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -499,6 +504,15 @@ public class main extends JFrame {
         });
         popMenu_addPlaneta.add(pop_addPlaneta);
 
+        pop_buscarCaminos.setText("Viajar por el camino corto");
+        pop_buscarCaminos.setToolTipText("");
+        pop_buscarCaminos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pop_buscarCaminosActionPerformed(evt);
+            }
+        });
+        popMenu_addPlaneta.add(pop_buscarCaminos);
+
         pop_modPlaneta.setText("Modificar Planeta");
         pop_modPlaneta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -514,6 +528,14 @@ public class main extends JFrame {
             }
         });
         popMenu_modPlaneta.add(pop_delPlaneta);
+
+        pop_asignarPrincipal.setText("Asignar nave a este nodo");
+        pop_asignarPrincipal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pop_asignarPrincipalActionPerformed(evt);
+            }
+        });
+        popMenu_modPlaneta.add(pop_asignarPrincipal);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -702,11 +724,34 @@ public class main extends JFrame {
         }
         posX=evt.getX();posY=evt.getY();
         if(nextStep){
+            
             if(evt.getClickCount() == 2){
-                pop_addPlanetaActionPerformed(null);
+                //pop_addPlanetaActionPerformed(null);
+            }else if (evt.getClickCount() == 1){
+                System.out.println(panelUniverso.getComponentCount());
+                int nodosEnUniverso = panelUniverso.getComponentCount();
+                if(nodosEnUniverso < grafo.getNodosSize() - 1){
+                    drawPlanetAt(grafo.getNodo(nodosEnUniverso));
+                }else if (nodosEnUniverso == grafo.getNodosSize() - 1){
+                    drawPlanetAt(grafo.getNodo(nodosEnUniverso));
+                    //HAY QUE ACTUALIZAR TODAS LOS DEMAS NODOS
+                    boolean repaint = false;
+                    for(int i = 0; i < ((UniverseJPanel)panelUniverso).getComponentCount();i++){
+                        try{
+                            PlanetaJLabel temp = ((PlanetaJLabel)((UniverseJPanel)panelUniverso).getComponent(i));
+                            updateLines(temp);
+                            repaint = true;
+                        }catch(Exception e){
+                            //NADA
+                        }
+                    }
+                    if(!repaint){
+                        panelUniverso.repaint();
+                    }
+                }
             }
             if(evt.isMetaDown()){
-                popMenu_addPlaneta.show(evt.getComponent(), evt.getX(), evt.getY());
+            popMenu_addPlaneta.show(evt.getComponent(), evt.getX(), evt.getY());
             }
         }
     }//GEN-LAST:event_panelUniversoMousePressed
@@ -714,7 +759,11 @@ public class main extends JFrame {
     private void pop_addPlanetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pop_addPlanetaActionPerformed
         Nodo nuevo;
         try {
-            grafo.addNodo(JOptionPane.showInputDialog(EditorPlaneta, "Ingrese el nombre del planeta: "));
+            String nombre = JOptionPane.showInputDialog(EditorPlaneta, "Ingrese el nombre del planeta: ");
+            if(nombre == null){
+                throw new Exception("No puede ser vacio");
+            }
+            grafo.addNodo(nombre);
             nuevo = grafo.getNodo(grafo.getNodosSize()-1);
             drawPlanetAt(nuevo);
         } catch (Exception ex) {
@@ -726,6 +775,7 @@ public class main extends JFrame {
     private void bu_guardarGrafobu_return2MenuMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bu_guardarGrafobu_return2MenuMouseReleased
         exportarArchivo();
         EditorPlaneta.setVisible(false);
+        this.setVisible(true);
     }//GEN-LAST:event_bu_guardarGrafobu_return2MenuMouseReleased
 
     private void bu_guardarPlanetaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bu_guardarPlanetaMouseReleased
@@ -893,6 +943,18 @@ public class main extends JFrame {
         }
     }//GEN-LAST:event_pop_delPlanetaActionPerformed
 
+    private void pop_asignarPrincipalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pop_asignarPrincipalActionPerformed
+        rocket = ((UniverseJPanel)panelUniverso).addRocket(Start.getLocation());
+    }//GEN-LAST:event_pop_asignarPrincipalActionPerformed
+
+    private void pop_buscarCaminosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pop_buscarCaminosActionPerformed
+        caminoMasCorto();
+        while(rocket.move()){
+        
+        }
+        
+    }//GEN-LAST:event_pop_buscarCaminosActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -968,6 +1030,8 @@ public class main extends JFrame {
     private javax.swing.JPopupMenu popMenu_addPlaneta;
     private javax.swing.JPopupMenu popMenu_modPlaneta;
     private javax.swing.JMenuItem pop_addPlaneta;
+    private javax.swing.JMenuItem pop_asignarPrincipal;
+    private javax.swing.JMenuItem pop_buscarCaminos;
     private javax.swing.JMenuItem pop_delPlaneta;
     private javax.swing.JMenuItem pop_modPlaneta;
     private javax.swing.JTextField tefi_pesoArista;
@@ -1161,6 +1225,7 @@ public class main extends JFrame {
         newPlanet.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt){
+                Start = (PlanetaJLabel)evt.getComponent();
                 if(evt.getClickCount() == 2){
                     pop_modPlanetaActionPerformed(null);
                 }
@@ -1190,6 +1255,12 @@ public class main extends JFrame {
                 list_aristas.setModel(listaAristas);
                 cobo_planetaDestino.setModel(listaPlanetas);
             }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                End = (PlanetaJLabel)e.getComponent();
+            }
+            
         });
         ((UniverseJPanel)panelUniverso).addPlaneta(newPlanet);
         panelUniverso.repaint();
@@ -1217,6 +1288,7 @@ public class main extends JFrame {
     
     private void restart(){
         try{
+            rocket = null;
             grafo = new TDAGrafo();
             panelUniverso.removeAll();
             listaAristas.clear();
@@ -1225,6 +1297,30 @@ public class main extends JFrame {
             list_aristas.setModel(null);
         }catch(java.lang.NullPointerException e){
             System.err.println("Apuntador null encontrado");
+        }
+        
+    }
+
+    private void caminoMasCorto() {
+        Nodo inicial = Start.getPlaneta();
+        Nodo destino = End.getPlaneta();
+        int[] peso = new int[grafo.getNodosSize()];
+        for(int i = 0; i < peso.length; i++){
+            peso[i] = -1;
+        }
+        /*
+              A B C D E F G
+            A - 1 2 3 4 5 1
+            B 0 - 3 0 3 0 3
+            C 1 1 - 0 0 0 9
+            D 3 5 3 - 2 4 2
+            E 0 2 3 0 - 1 4
+            F 2 3 4 5 2 - 4
+            G 0 2 3 0 4 0 -
+        */
+        for(int i = 0; i < inicial.getAristaCount(); i++){
+            peso[grafo.getPosicion(inicial.getArista(i).getAdyacente())] = Start.getPlaneta().getArista(i).getPeso();
+            
         }
         
     }

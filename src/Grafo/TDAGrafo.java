@@ -77,6 +77,9 @@ public class TDAGrafo {
     public int getNodosSize(){
         return listaNodos.size();
     }
+    public int getPosicion(Nodo elem) {
+        return listaNodos.indexOf(elem);
+    }
     @Override
     public String toString(){
         String retStr = "";

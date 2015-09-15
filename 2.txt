@@ -2,4 +2,4 @@ Planeta X:Planeta Y:Planeta Z:Planeta A
 Planeta X -3-> Planeta Z
 Planeta X -2-> Planeta Y
 Planeta Y -5-> Planeta Z
-Planeta Z -4-> Planeta X
+Planeta Z -4-> Planeta A

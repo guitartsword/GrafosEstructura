@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -46,6 +47,9 @@ class UniverseJPanel extends JPanel {
             }
         }
         super.remove(comp);
+    }
+    public Rocket addRocket(Point Start){
+        return new Rocket(this,Start);
     }
     @Override
     public void removeAll(){
