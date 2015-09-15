@@ -5,6 +5,7 @@
  */
 package Grafo;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,6 +20,12 @@ public class Nodo {
     public Nodo(String identidad){
         this.identidad = identidad;
     }
+
+    public Nodo(Nodo other) {
+        aristas = new ArrayList(other.aristas);
+        identidad = other.getIdentidad();
+    }
+    
     public boolean addAdyacencia(Nodo adyacente, int peso){
         /*if(!(addControl < adyacentes.length)){
         throw new Exception("No hay mas nodos para hacer adyacencia");
@@ -60,4 +67,31 @@ public class Nodo {
     public void removeAdyacencia(int index) {
         aristas.remove(index);
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 29 * hash + Objects.hashCode(this.aristas);
+        hash = 29 * hash + Objects.hashCode(this.identidad);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Nodo other = (Nodo) obj;
+        if (!Objects.equals(this.aristas, other.aristas)) {
+            return false;
+        }
+        if (!Objects.equals(this.identidad, other.identidad)) {
+            return false;
+        }
+        return true;
+    }
+    
 }

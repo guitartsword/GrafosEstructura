@@ -8,6 +8,8 @@ package Main;
 import Grafo.Arista;
 import Grafo.Nodo;
 import Grafo.TDAGrafo;
+import ListaEnlazada.ListaEnlazada;
+import Pila.Pila;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
@@ -119,6 +121,7 @@ public class main extends JFrame {
         pop_modPlaneta = new javax.swing.JMenuItem();
         pop_delPlaneta = new javax.swing.JMenuItem();
         pop_asignarPrincipal = new javax.swing.JMenuItem();
+        pop_asignarDestino = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -537,6 +540,14 @@ public class main extends JFrame {
         });
         popMenu_modPlaneta.add(pop_asignarPrincipal);
 
+        pop_asignarDestino.setText("Asignar destino");
+        pop_asignarDestino.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pop_asignarDestinoActionPerformed(evt);
+            }
+        });
+        popMenu_modPlaneta.add(pop_asignarDestino);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setResizable(false);
@@ -671,6 +682,7 @@ public class main extends JFrame {
         }
         if(nextStep){
             if(importarArchivo()){
+                restart();
                 this.setVisible(false);
                 EditorPlaneta.setVisible(true);
             }            
@@ -944,16 +956,32 @@ public class main extends JFrame {
     }//GEN-LAST:event_pop_delPlanetaActionPerformed
 
     private void pop_asignarPrincipalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pop_asignarPrincipalActionPerformed
-        rocket = ((UniverseJPanel)panelUniverso).addRocket(Start.getLocation());
+        //rocket = ((UniverseJPanel)panelUniverso).addRocket(Start.getLocation());
+        Start = selectedPlanet;
     }//GEN-LAST:event_pop_asignarPrincipalActionPerformed
 
     private void pop_buscarCaminosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pop_buscarCaminosActionPerformed
-        caminoMasCorto();
-        while(rocket.move()){
-        
+        System.out.println("DE AQUI ACA");
+        System.out.println(Start.getText());
+        System.out.println(End.getText());
+        Pila lista = grafo.A_Star(Start.getPlaneta(), End.getPlaneta());
+        System.out.println("El camino mas corto es: " );
+        while(true){
+            try {
+                System.out.println(grafo.getNodo(lista.pop()));
+            } catch (Exception ex) {
+                break;
+            }
         }
+        /*while(rocket.move()){
+        
+        }*/
         
     }//GEN-LAST:event_pop_buscarCaminosActionPerformed
+
+    private void pop_asignarDestinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pop_asignarDestinoActionPerformed
+        End = selectedPlanet;
+    }//GEN-LAST:event_pop_asignarDestinoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1030,6 +1058,7 @@ public class main extends JFrame {
     private javax.swing.JPopupMenu popMenu_addPlaneta;
     private javax.swing.JPopupMenu popMenu_modPlaneta;
     private javax.swing.JMenuItem pop_addPlaneta;
+    private javax.swing.JMenuItem pop_asignarDestino;
     private javax.swing.JMenuItem pop_asignarPrincipal;
     private javax.swing.JMenuItem pop_buscarCaminos;
     private javax.swing.JMenuItem pop_delPlaneta;
@@ -1225,11 +1254,12 @@ public class main extends JFrame {
         newPlanet.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt){
-                Start = (PlanetaJLabel)evt.getComponent();
                 if(evt.getClickCount() == 2){
                     pop_modPlanetaActionPerformed(null);
                 }
-                popMenu_modPlaneta.show(evt.getComponent(), evt.getX(), evt.getY());
+                if(evt.isMetaDown()){
+                    popMenu_modPlaneta.show(evt.getComponent(), evt.getX(), evt.getY());
+                }
                 selectedPlanet = ((PlanetaJLabel)evt.getComponent());
                 String nombre = selectedPlanet.getPlaneta().getIdentidad();
                 tefi_planetName.setText(nombre);
@@ -1255,11 +1285,6 @@ public class main extends JFrame {
                 list_aristas.setModel(listaAristas);
                 cobo_planetaDestino.setModel(listaPlanetas);
             }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                End = (PlanetaJLabel)e.getComponent();
-            }
             
         });
         ((UniverseJPanel)panelUniverso).addPlaneta(newPlanet);
@@ -1275,7 +1300,6 @@ public class main extends JFrame {
                 try{
                     //Solo se eligen los que son "planetas adyacentes"
                     if(toAdd.getAdyacente().getIdentidad().equals(((JLabel)panelUniverso.getComponent(j)).getText())){
-                        //((UniverseJPanel)panelUniverso).addLine(seleccionado.getX()+25, seleccionado.getY()+25, panelUniverso.getComponent(j).getX()+25, panelUniverso.getComponent(j).getY()+25);
                         temp.addLine(temp.getX()+25, temp.getY()+25, panelUniverso.getComponent(j).getX()+25, panelUniverso.getComponent(j).getY()+25);
                     }
                 }catch(Exception e){
@@ -1295,32 +1319,10 @@ public class main extends JFrame {
             listaPlanetas.removeAllElements();
             cobo_planetaDestino.setModel(null);
             list_aristas.setModel(null);
+            Start = null;
+            End = null;
         }catch(java.lang.NullPointerException e){
             System.err.println("Apuntador null encontrado");
-        }
-        
-    }
-
-    private void caminoMasCorto() {
-        Nodo inicial = Start.getPlaneta();
-        Nodo destino = End.getPlaneta();
-        int[] peso = new int[grafo.getNodosSize()];
-        for(int i = 0; i < peso.length; i++){
-            peso[i] = -1;
-        }
-        /*
-              A B C D E F G
-            A - 1 2 3 4 5 1
-            B 0 - 3 0 3 0 3
-            C 1 1 - 0 0 0 9
-            D 3 5 3 - 2 4 2
-            E 0 2 3 0 - 1 4
-            F 2 3 4 5 2 - 4
-            G 0 2 3 0 4 0 -
-        */
-        for(int i = 0; i < inicial.getAristaCount(); i++){
-            peso[grafo.getPosicion(inicial.getArista(i).getAdyacente())] = Start.getPlaneta().getArista(i).getPeso();
-            
         }
         
     }

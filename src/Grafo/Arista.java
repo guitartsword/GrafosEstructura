@@ -9,7 +9,7 @@ package Grafo;
  *
  * @author Isaias
  */
-public class Arista {
+public class Arista implements Comparable{
     private Nodo adyacente;
     private int peso;
 
@@ -37,6 +37,11 @@ public class Arista {
     @Override
     public String toString() {
         return "-" + peso + "->" + " " + adyacente.getIdentidad();
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return peso - ((Arista)o).peso;
     }
     
 }

@@ -88,7 +88,37 @@ public class ListaEnlazada {
             }
         }
     }
+    public int unqueue() throws Exception{
+        if(cabeza == null){
+            throw new Exception("Lista vacía");
+        }
+        int retVal = cabeza.getValue();
+        cabeza = cabeza.next();
+        return retVal;
+    }
     public int getSize(){
         return size;
+    }
+    public int get(int index){
+        Nodo temp = cabeza;
+        for(int i = 0; i < size; i++){
+            if(i == index){
+                return temp.getValue();
+            }else{
+                temp = temp.next();
+            }
+        }
+        return temp.getValue();
+    }
+    public int indexOf(int element){
+        Nodo temp = cabeza;
+        for(int i = 0; i < size; i++){
+            if(temp.getValue() == element){
+                return i;
+            }else{
+                temp = temp.next();
+            }
+        }
+        return -1;
     }
 }
