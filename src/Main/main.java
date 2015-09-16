@@ -8,12 +8,9 @@ package Main;
 import Grafo.Arista;
 import Grafo.Nodo;
 import Grafo.TDAGrafo;
-import ListaEnlazada.ListaEnlazada;
-import Pila.Pila;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -977,15 +974,16 @@ public class main extends JFrame {
     }//GEN-LAST:event_pop_asignarPrincipalActionPerformed
 
     private void pop_buscarCaminosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pop_buscarCaminosActionPerformed
+        rocket = ((UniverseJPanel)panelUniverso).addRocket(Start.getLocation());        
         ArrayList<Nodo> nodo = grafo.Dijkstra(Start.getPlaneta(), End.getPlaneta());
         String camino = "";
-        for(int i = 0; i < nodo.size() -1; i++){
+        for(int i = 0; i < nodo.size() - 1; i++){
             camino += nodo.get(i) + " -> ";
         }
         camino += nodo.get(nodo.size()-1);
         JOptionPane.showMessageDialog(EditorPlaneta, "El camino mas corto es:\n" + camino);
         camino = "";
-        if(JOptionPane.showConfirmDialog(null, "¿Activar WARP?", "Confirmacion", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+        if(JOptionPane.showConfirmDialog(EditorPlaneta, "¿Activar WARP?", "Confirmacion", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
             int maxPeso;
             int warps = 1;
             while(warps != WARPS){
@@ -1003,7 +1001,6 @@ public class main extends JFrame {
                     }
                     if(maxPeso == nodo.get(j).getAristaConAdyacente(nodo.get(j+1)).getPeso()){
                         nodo.remove(j+1);
-                        
                     }
                 }
                 warps++;
@@ -1015,10 +1012,10 @@ public class main extends JFrame {
             JOptionPane.showMessageDialog(EditorPlaneta, "El camino mas corto es:\n" + camino);
         }
         
-        //ACTIVAR COHETE
-        //rocket = ((UniverseJPanel)panelUniverso).addRocket(Start.getLocation());
-        //rocket.setEndPoint(End.getLocation());
-        //rocket.start();
+        //ACTIVAR COHETEket.setEndPoint(End.getLocation());
+        rocket.setTIME(1);
+        rocket.setEndPoint(End.getLocation());
+        rocket.start();
     }//GEN-LAST:event_pop_buscarCaminosActionPerformed
 
     private void pop_asignarDestinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pop_asignarDestinoActionPerformed

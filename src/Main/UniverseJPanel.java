@@ -21,6 +21,7 @@ import javax.swing.JPanel;
 class UniverseJPanel extends JPanel {
     private String command="reset";
     private ArrayList<PlanetaJLabel> planetas = new ArrayList();
+    private Rocket rocket;
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -31,6 +32,8 @@ class UniverseJPanel extends JPanel {
                 planeta.getArista(i).paint(g,planeta.getPlaneta().getArista(i).getPeso());
             }
         }
+        if(rocket != null)
+            rocket.paint(g);
     }
     public void addPlaneta(PlanetaJLabel nuevo){
         planetas.add(nuevo);
@@ -45,7 +48,8 @@ class UniverseJPanel extends JPanel {
         super.remove(comp);
     }
     public Rocket addRocket(Point Start){
-        return new Rocket(this,Start);
+        rocket = new Rocket(this, Start);
+        return rocket;
     }
     @Override
     public void removeAll(){

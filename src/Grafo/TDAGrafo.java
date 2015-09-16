@@ -103,9 +103,9 @@ public class TDAGrafo {
     }
 
     public ArrayList<Nodo> A_Star(Nodo inicial, Nodo destino) {
-        Nodo actual = inicial;
+        
         Pila retPath = new Pila();
-        busquedaRapida(actual,destino, retPath);
+        busquedaRapida(inicial,destino, retPath);
         retPath.push(listaNodos.indexOf(inicial));
         ArrayList<Nodo> nodos = new ArrayList();
         while(true){
@@ -117,9 +117,6 @@ public class TDAGrafo {
         }
         if(nodos.isEmpty()){
             return null;
-        }else if(nodos.size() == 1){
-            if(nodos.get(0).equals(inicial))
-                return null;
         }
         return nodos;
     }
@@ -127,11 +124,31 @@ public class TDAGrafo {
     public ArrayList<Nodo> Dijkstra(Nodo inicial, Nodo destino) {
         ArrayList<Nodo> mejorOpcion = null;
         int mejorPeso = Integer.MAX_VALUE;
+        if(inicial.equals(destino)){
+            System.out.println("SAme");
+            mejorOpcion = new ArrayList();
+            mejorOpcion.add(inicial);
+            return mejorOpcion;
+        }/*else if(inicial.getAristaCount() == 1){
+        System.out.println("Una arista");
+        if(inicial.getArista(0).getAdyacente().equals(destino)){
+        System.out.println("inicial,destino");
+        mejorOpcion = new ArrayList();
+        mejorOpcion.add(inicial);
+        mejorOpcion.add(destino);
+        return mejorOpcion;
+        }
+        }*/
         for(int i = 0; i < inicial.getAristaCount(); i++){
             ArrayList<Nodo> temp = A_Star(inicial.getArista(i).getAdyacente(),destino);
             int pesoTemp = inicial.getArista(i).getPeso();
             if(temp == null){
                 continue;
+            }else if (temp.size() == 1){
+                if(temp.get(0).equals(destino)){
+                    mejorOpcion = temp;
+                    break;
+                }
             }
             for(int j = 0; j < temp.size() - 1; j++){
                 pesoTemp += temp.get(j).getAristaConAdyacente(temp.get(j+1)).getPeso();

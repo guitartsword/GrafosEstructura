@@ -42,19 +42,19 @@ public class Rocket extends Thread{
         
     }
     public void paint(Graphics g){
-        AffineTransform at = new AffineTransform();
+        /*AffineTransform at = new AffineTransform();
         if(x2 > 0){
             Graphics2D g2d = (Graphics2D)g;
             //las transformaciones se hacen en reversa
             at.translate(x1, x2);
             at.rotate(x1-x2, y1-y2);
             at.scale(0.4, 0.4);
-            at.translate(-imagen.getHeight()/2, -imagen.getWidth()/2);
+            at.translate(-imagen.getWidth()/2, -imagen.getHeight()/2);
 
-            g2d.drawImage(imagen,at,panel);
-        }else if (x2 <0){
-            g.drawImage(imagen.getScaledInstance(20, 20, BufferedImage.SCALE_SMOOTH), (int)x1, (int)y1, panel);
-        }
+            g2d.drawImage(imagen,at,null);
+        }else if (x2 <0){*/
+        g.drawImage(imagen.getScaledInstance(30, 30, BufferedImage.SCALE_SMOOTH), (int)(x1+15), (int)(y1+15), panel);
+        
     }
     public boolean move(){
         if(x1 > x2){
@@ -72,21 +72,24 @@ public class Rocket extends Thread{
         m = (y2-y1)/(x2-x1);
     }
     public void setTIME(long time){
-        TIME = time;
+        TIME = time*10;
     }
     @Override
     public void run() {
         if(TIME != 0){
             while(move()){
                 try {
-                    Thread.sleep(TIME);
                     panel.repaint();
+                    System.out.println("x1 = " + x1);
+                    System.out.println("y1 = " + y1);
+                    sleep(TIME);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Rocket.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }else{
             while(move()){
+                System.out.println("321");
                 panel.repaint();
             }
         }
