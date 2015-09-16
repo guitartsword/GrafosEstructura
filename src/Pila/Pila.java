@@ -15,11 +15,6 @@ public class Pila {
         size = 0;
     }
 
-    public Pila(Nodo head) {
-        this.head = head;
-        size = 1;
-    }
-
     public void push(int value) {
         if (head == null) {
             head = new Nodo(value);

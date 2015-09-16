@@ -28,6 +28,7 @@ public class Rocket extends Thread{
     private double m;//Pendiente m=1.0 * (y2-y1)/(x2-x1);//pendiente
     private UniverseJPanel panel;
     private BufferedImage imagen;
+    private long TIME;
     
     public Rocket(UniverseJPanel panel, Point start){
         try {
@@ -38,7 +39,7 @@ public class Rocket extends Thread{
         this.panel = panel;
         x1 = start.x;
         y1 = start.y;
-        m = (y2-y1)/(x2-x1);
+        
     }
     public void paint(Graphics g){
         AffineTransform at = new AffineTransform();
@@ -68,17 +69,26 @@ public class Rocket extends Thread{
     public void setEndPoint(Point End){
         x2 = End.x;
         y2 = End.y;
+        m = (y2-y1)/(x2-x1);
     }
-
+    public void setTIME(long time){
+        TIME = time;
+    }
     @Override
     public void run() {
-        while(move()){
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Rocket.class.getName()).log(Level.SEVERE, null, ex);
+        if(TIME != 0){
+            while(move()){
+                try {
+                    Thread.sleep(TIME);
+                    panel.repaint();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Rocket.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
-            
+        }else{
+            while(move()){
+                panel.repaint();
+            }
         }
     }
     

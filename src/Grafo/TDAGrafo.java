@@ -29,7 +29,7 @@ public class TDAGrafo {
         try{
         listaNodos.get(Node1).addAdyacencia(listaNodos.get(Node2), Peso);
         }catch(Exception e){
-            System.out.println(e.getMessage() + "\nCAUSA: " + e.getCause());
+            System.err.println(e.getMessage() + "\nCAUSA: " + e.getCause());
             return false;
         }
         return true;
@@ -102,39 +102,69 @@ public class TDAGrafo {
         return retStr;
     }
 
-    public Pila A_Star(Nodo inicial, Nodo destino) {
+    public ArrayList<Nodo> A_Star(Nodo inicial, Nodo destino) {
         Nodo actual = inicial;
         Pila retPath = new Pila();
-        caminoCorto(actual,destino, retPath);
+        busquedaRapida(actual,destino, retPath);
         retPath.push(listaNodos.indexOf(inicial));
-        return retPath;
+        ArrayList<Nodo> nodos = new ArrayList();
+        while(true){
+            try {
+                nodos.add(listaNodos.get(retPath.pop()));
+            } catch (Exception ex) {
+                break;
+            }
+        }
+        if(nodos.isEmpty()){
+            return null;
+        }else if(nodos.size() == 1){
+            if(nodos.get(0).equals(inicial))
+                return null;
+        }
+        return nodos;
     }
-
-    private Nodo caminoCorto(Nodo indexMenor, Nodo destino, Pila recorrido) {
+    //A* con H(2)
+    public ArrayList<Nodo> Dijkstra(Nodo inicial, Nodo destino) {
+        ArrayList<Nodo> mejorOpcion = null;
+        int mejorPeso = Integer.MAX_VALUE;
+        for(int i = 0; i < inicial.getAristaCount(); i++){
+            ArrayList<Nodo> temp = A_Star(inicial.getArista(i).getAdyacente(),destino);
+            int pesoTemp = inicial.getArista(i).getPeso();
+            if(temp == null){
+                continue;
+            }
+            for(int j = 0; j < temp.size() - 1; j++){
+                pesoTemp += temp.get(j).getAristaConAdyacente(temp.get(j+1)).getPeso();
+            }
+            if(mejorOpcion == null){
+                mejorOpcion = temp;
+                mejorPeso = pesoTemp;
+            }else if(pesoTemp < mejorPeso){
+                mejorOpcion = temp;
+                mejorPeso = pesoTemp;
+            }
+        }
+        if(mejorOpcion != null)
+            mejorOpcion.add(0, inicial);
+        return mejorOpcion;
+    }
+    
+    //A*
+    private Nodo busquedaRapida(Nodo indexMenor, Nodo destino, Pila recorrido) {
         ArrayList<Arista> aristas = new ArrayList();
         if(indexMenor == null){
             return null;
         }else if(indexMenor.equals(destino)){
             return indexMenor;
         }
-        
-        System.out.println("ORIGINAL");
         for(int i = 0; i < indexMenor.getAristaCount(); i++){
             aristas.add(indexMenor.getArista(i));
-            System.out.println(aristas.get(i).getPeso());
         }
         Collections.sort(aristas);
-        System.out.println("ORDENADO");
-        for(int i = 0; i < indexMenor.getAristaCount(); i++){
-            System.out.println(aristas.get(i).getPeso());
-        }
         
         for(int i = 0; i < aristas.size(); i++){
-            Nodo camino = caminoCorto(aristas.get(i).getAdyacente(),destino, recorrido);
+            Nodo camino = busquedaRapida(aristas.get(i).getAdyacente(),destino, recorrido);
             if(camino != null){
-                System.out.println("Real: " + listaNodos.indexOf(camino));
-                System.out.println("Return: " + aristas.get(i).getAdyacente());
-                System.out.println("");
                 recorrido.push(listaNodos.indexOf(aristas.get(i).getAdyacente()));
                 return aristas.get(i).getAdyacente();
             }

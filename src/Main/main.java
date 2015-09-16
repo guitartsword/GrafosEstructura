@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -51,6 +52,7 @@ public class main extends JFrame {
     private PlanetaJLabel End;
     private PlanetaJLabel selectedPlanet;
     Rocket rocket;
+    private int WARPS = 2;
     
     public main() {
         initComponents();
@@ -98,6 +100,8 @@ public class main extends JFrame {
         panelUniverso = new UniverseJPanel();
         bu_return2Menu1 = new javax.swing.JLabel();
         bu_guardarGrafo = new javax.swing.JLabel();
+        text_hasta = new javax.swing.JLabel();
+        text_desde = new javax.swing.JLabel();
         ModificarPlaneta = new javax.swing.JDialog();
         jPanel5 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -264,7 +268,7 @@ public class main extends JFrame {
         );
         panelUniversoLayout.setVerticalGroup(
             panelUniversoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 476, Short.MAX_VALUE)
+            .addGap(0, 471, Short.MAX_VALUE)
         );
 
         bu_return2Menu1.setBackground(new java.awt.Color(0, 0, 0));
@@ -291,26 +295,42 @@ public class main extends JFrame {
             }
         });
 
+        text_hasta.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        text_hasta.setForeground(new java.awt.Color(204, 204, 204));
+        text_hasta.setText("Hasta: Nodo Y");
+
+        text_desde.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        text_desde.setForeground(new java.awt.Color(204, 204, 204));
+        text_desde.setText("Desde: Nodo X");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(panelUniverso, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+            .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(bu_guardarGrafo, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(bu_guardarGrafo, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(text_desde))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(bu_return2Menu1, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(bu_return2Menu1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(text_hasta, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addComponent(panelUniverso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bu_return2Menu1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(bu_guardarGrafo, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(text_hasta)
+                    .addComponent(text_desde))
                 .addContainerGap())
         );
 
@@ -681,8 +701,8 @@ public class main extends JFrame {
             nextStep = evt.getY() < evt.getComponent().getHeight() && evt.getY() > 0;
         }
         if(nextStep){
+            restart();
             if(importarArchivo()){
-                restart();
                 this.setVisible(false);
                 EditorPlaneta.setVisible(true);
             }            
@@ -740,7 +760,6 @@ public class main extends JFrame {
             if(evt.getClickCount() == 2){
                 //pop_addPlanetaActionPerformed(null);
             }else if (evt.getClickCount() == 1){
-                System.out.println(panelUniverso.getComponentCount());
                 int nodosEnUniverso = panelUniverso.getComponentCount();
                 if(nodosEnUniverso < grafo.getNodosSize() - 1){
                     drawPlanetAt(grafo.getNodo(nodosEnUniverso));
@@ -934,11 +953,8 @@ public class main extends JFrame {
 
     private void pop_delPlanetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pop_delPlanetaActionPerformed
         PlanetaJLabel delPlanet = selectedPlanet;//(PlanetaJLabel) panelUniverso.getComponentAt(posX, posY);
-        System.out.println("removiendo: " + selectedPlanet.getPlaneta().getIdentidad());
         ((UniverseJPanel)panelUniverso).remove(selectedPlanet);
         grafo.removeNodo(delPlanet.getPlaneta().getIdentidad());
-        System.out.println(grafo.toString());
-        System.out.println("AHORA ACTUAlizar");
         //HAY QUE ACTUALIZAR TODAS LOS DEMAS NODOS
         boolean repaint = false;
         for(int i = 0; i < ((UniverseJPanel)panelUniverso).getComponentCount();i++){
@@ -956,31 +972,58 @@ public class main extends JFrame {
     }//GEN-LAST:event_pop_delPlanetaActionPerformed
 
     private void pop_asignarPrincipalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pop_asignarPrincipalActionPerformed
-        //rocket = ((UniverseJPanel)panelUniverso).addRocket(Start.getLocation());
         Start = selectedPlanet;
+        text_desde.setText("Desde: " + Start.getPlaneta());
     }//GEN-LAST:event_pop_asignarPrincipalActionPerformed
 
     private void pop_buscarCaminosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pop_buscarCaminosActionPerformed
-        System.out.println("DE AQUI ACA");
-        System.out.println(Start.getText());
-        System.out.println(End.getText());
-        Pila lista = grafo.A_Star(Start.getPlaneta(), End.getPlaneta());
-        System.out.println("El camino mas corto es: " );
-        while(true){
-            try {
-                System.out.println(grafo.getNodo(lista.pop()));
-            } catch (Exception ex) {
-                break;
-            }
+        ArrayList<Nodo> nodo = grafo.Dijkstra(Start.getPlaneta(), End.getPlaneta());
+        String camino = "";
+        for(int i = 0; i < nodo.size() -1; i++){
+            camino += nodo.get(i) + " -> ";
         }
-        /*while(rocket.move()){
+        camino += nodo.get(nodo.size()-1);
+        JOptionPane.showMessageDialog(EditorPlaneta, "El camino mas corto es:\n" + camino);
+        camino = "";
+        if(JOptionPane.showConfirmDialog(null, "¿Activar WARP?", "Confirmacion", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+            int maxPeso;
+            int warps = 1;
+            while(warps != WARPS){
+                maxPeso = 0;
+                for(int j = 0; j < nodo.size() - 2; j++){
+                    if(nodo.get(j).getAristaConAdyacente(nodo.get(j+1)) == null){
+                        continue;
+                    }
+                    if(maxPeso < nodo.get(j).getAristaConAdyacente(nodo.get(j+1)).getPeso())
+                        maxPeso = nodo.get(j).getAristaConAdyacente(nodo.get(j+1)).getPeso();
+                }
+                for(int j = 0; j < nodo.size() - 2; j++){
+                    if(nodo.get(j).getAristaConAdyacente(nodo.get(j+1)) == null){
+                        continue;
+                    }
+                    if(maxPeso == nodo.get(j).getAristaConAdyacente(nodo.get(j+1)).getPeso()){
+                        nodo.remove(j+1);
+                        
+                    }
+                }
+                warps++;
+            }
+            for(int i = 0; i < nodo.size() -1; i++){
+                camino += nodo.get(i) + " -> ";
+            }
+            camino += nodo.get(nodo.size()-1);
+            JOptionPane.showMessageDialog(EditorPlaneta, "El camino mas corto es:\n" + camino);
+        }
         
-        }*/
-        
+        //ACTIVAR COHETE
+        //rocket = ((UniverseJPanel)panelUniverso).addRocket(Start.getLocation());
+        //rocket.setEndPoint(End.getLocation());
+        //rocket.start();
     }//GEN-LAST:event_pop_buscarCaminosActionPerformed
 
     private void pop_asignarDestinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pop_asignarDestinoActionPerformed
         End = selectedPlanet;
+        text_hasta.setText("Hasta: " + End.getPlaneta());
     }//GEN-LAST:event_pop_asignarDestinoActionPerformed
 
     /**
@@ -1065,6 +1108,8 @@ public class main extends JFrame {
     private javax.swing.JMenuItem pop_modPlaneta;
     private javax.swing.JTextField tefi_pesoArista;
     private javax.swing.JTextField tefi_planetName;
+    private javax.swing.JLabel text_desde;
+    private javax.swing.JLabel text_hasta;
     private javax.swing.JLabel text_info1;
     private javax.swing.JLabel text_planetName;
     // End of variables declaration//GEN-END:variables
@@ -1215,10 +1260,6 @@ public class main extends JFrame {
                 String node2 = arista.substring(arista.indexOf(">") + 1);
                 //El peso de la arista
                 int peso = Integer.parseInt(arista.substring(arista.indexOf("-") + 1, arista.lastIndexOf("-")));
-                //DEBUG
-                System.out.printf("node1 = %s\n"
-                        + "node2 = %s\n"
-                        + "peso = %d\n", node1, node2, peso);
                 //Agrega aristas al grafo
                 grafo.addArista(node1, node2, peso);
             }
@@ -1254,12 +1295,6 @@ public class main extends JFrame {
         newPlanet.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt){
-                if(evt.getClickCount() == 2){
-                    pop_modPlanetaActionPerformed(null);
-                }
-                if(evt.isMetaDown()){
-                    popMenu_modPlaneta.show(evt.getComponent(), evt.getX(), evt.getY());
-                }
                 selectedPlanet = ((PlanetaJLabel)evt.getComponent());
                 String nombre = selectedPlanet.getPlaneta().getIdentidad();
                 tefi_planetName.setText(nombre);
@@ -1284,6 +1319,12 @@ public class main extends JFrame {
                 }
                 list_aristas.setModel(listaAristas);
                 cobo_planetaDestino.setModel(listaPlanetas);
+                if(evt.getClickCount() == 2){
+                    pop_modPlanetaActionPerformed(null);
+                }
+                if(evt.isMetaDown()){
+                    popMenu_modPlaneta.show(evt.getComponent(), evt.getX(), evt.getY());
+                }
             }
             
         });

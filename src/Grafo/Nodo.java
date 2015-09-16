@@ -58,7 +58,14 @@ public class Nodo {
     public Arista getArista(int index) {
         return aristas.get(index);
     }
-    
+    public Arista getAristaConAdyacente(Nodo elemento){
+        for(int i = 0; i < aristas.size(); i++){
+            if(aristas.get(i).getAdyacente().equals(elemento)){
+                return aristas.get(i);
+            }
+        }
+        return null;
+    }
     @Override
     public String toString(){
         return identidad;
