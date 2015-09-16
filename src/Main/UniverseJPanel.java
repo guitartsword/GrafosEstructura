@@ -19,21 +19,23 @@ import javax.swing.JPanel;
  * @author Isaias
  */
 class UniverseJPanel extends JPanel {
-    private String command="reset";
+    private String command="normal";
     private ArrayList<PlanetaJLabel> planetas = new ArrayList();
     private Rocket rocket;
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Image planetaImage = new ImageIcon("./Imagenes/Universo.png").getImage();
-        g.drawImage(planetaImage, 0, 0, getWidth(),getHeight(), this);
-        for(PlanetaJLabel planeta: planetas){
-            for(int i = 0; i < planeta.aristaSize(); i++){
-                planeta.getArista(i).paint(g,planeta.getPlaneta().getArista(i).getPeso());
+        if(command.equals("Rocket")){
+            rocket.paint(g);
+        }else if(command.equals("normal")){
+            Image planetaImage = new ImageIcon("./Imagenes/Universo.png").getImage();
+            g.drawImage(planetaImage, 0, 0, getWidth(),getHeight(), this);
+            for(PlanetaJLabel planeta: planetas){
+                for(int i = 0; i < planeta.aristaSize(); i++){
+                    planeta.getArista(i).paint(g,planeta.getPlaneta().getArista(i).getPeso());
+                }
             }
         }
-        if(rocket != null)
-            rocket.paint(g);
     }
     public void addPlaneta(PlanetaJLabel nuevo){
         planetas.add(nuevo);
@@ -50,6 +52,9 @@ class UniverseJPanel extends JPanel {
     public Rocket addRocket(Point Start){
         rocket = new Rocket(this, Start);
         return rocket;
+    }
+    public void setPaintCommand(String command){
+        this.command = command;
     }
     @Override
     public void removeAll(){

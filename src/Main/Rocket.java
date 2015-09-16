@@ -76,6 +76,7 @@ public class Rocket extends Thread{
     }
     @Override
     public void run() {
+        panel.setPaintCommand("Rocket");
         if(TIME != 0){
             while(move()){
                 try {
@@ -93,6 +94,7 @@ public class Rocket extends Thread{
                 panel.repaint();
             }
         }
+        panel.setPaintCommand("normal");
     }
     
 }
